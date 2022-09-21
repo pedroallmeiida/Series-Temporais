@@ -1,7 +1,7 @@
 ---
 title: "Séries temporais"
 author: "Pedro Monteiro de Almeida Junior"
-format: html
+format: pdf
 editor: visual
 ---
 
@@ -216,3 +216,165 @@ plot.ts(x1, xlab = "Tempo", ylab = "Valores", main = "série não estacionária"
 
 plot.ts(x2, xlab = "Tempo", ylab = "Valores", main = "série aplicando o operador \ndiferença de primeira ordem" )
 ```
+
+### Modelos para séries temporais
+
+Os modelos em séries temporais controlados por leis probabilísticas, são baseados na teoria de um processo estocástico. A construção desses modelos depende de vários fatores, tais como a natureza dos dados, objetivo da análise e comportamento da série. Dessa forma, o leque de opções de modelos que podemos aplicar são muitos, inclusive modelos não probabilísticos também podem ser usados (Redes neurais, deep learning, etc ...).
+
+#### Processos estocásticos
+
+[**Definição:**]{.underline} Seja $\tau$ um conjunto arbitrário. Um processo estocástico é uma família $Z = \{ Z_t, t \in \tau \}$, tal que, para cada $t \in \tau$, $Z_t$ é uma variável aleatória.
+
+Nessas condições, um processo estocástico é uma família de variáveis aleatórias, que supomos definidas num mesmo espaço de probabilidade $( \Omega, \mathcal{A}, \mathcal{P} )$. Cada $t \in \mathbb{Z}$, tal que $Z_t$
+
+seja uma variável aleatória. Na Figura a seguir, podemos ilustrar um processo estocástico como uma família de trajetórias.
+
+![Fonte: Morettin & Toloi (2018)](processos.png)
+
+**Observação:** Uma série temporal é uma realização de um processo estocástico, isto é, $Z_t^{(j)}$ para algum $j = 1, \ldots, n$.
+
+#### Processos estocásticos estacionários
+
+**Definição:** Um processo estocástico $Z=\{Z(t), t \in \tau\}$\$ diz-se estritamente estacionário se todas as distribuições finito-dimensionais permanecem as mesmas sob translações no tempo, ou seja,
+
+$$
+F\left(z_1, \ldots, z_n ; t_1+\tau, \ldots, t_n+\tau\right)=F\left(z_1, \ldots, z_n ; t_1, \ldots, t_n\right)
+$$
+
+para quaisquer $t_1, \ldots, t_n, \tau$.
+
+Isto significa, em particular, que todas as distribuições unidimensionais são invariantes sob translações do tempo, logo a média $\mu(t)$ e a variância $V(t)$ são constantes, isto é,
+
+$$
+\mu(t)=\mu, \quad V(t)=\sigma^2,
+$$
+
+para todo $t \in \tau$. Sem perda de generalidade, podemos supor que $\mu=0$; caso contrário, considere o processo $\{Z(t)-\mu\}$.
+
+**Definição:** Um processo estocástico $Z=\{Z(t), t \in T\}$ diz-se fracamente estacionário ou estacionário de segunda ordem (ou em sentido amplo) se e somente se
+
+\(i\) $E\{Z(t)\}=\mu(t)=\mu$, constante, para todo $t \in T_{\text {; }}$
+
+\(ii\) $E\left\{Z^2(t)\right\}<\infty$, para todo $t \in T$;
+
+\(iii\) $\gamma\left(t_1, t_2\right)=\operatorname{Cov}\left\{Z\left(t_1\right), Z\left(t_2\right)\right\}$ é uma função de $\left|t_1-t_2\right|$.
+
+### Função de autocovariância
+
+Seja $\{Z_t, t \in \mathbb{Z}\}$ um processo estocástico real com tempo discreto, de média zero e função de autocovariância (FACV) $\gamma_r = \mathbf{E}( Z_t Z_{t-r} )$.
+
+**Proposição**: A FACV $\gamma_r$ satisfaz as seguintes propriedades:
+
+\(i\) $\gamma_0 > 0$
+
+\(ii\) $\gamma_{-r} = \gamma_r$
+
+\(iii\) $\mid  \gamma_r \mid \leq \gamma_0$
+
+### Modelo de decomposição 
+
+Toda série temporal pode ser decomposta em três componentes, como segue,
+
+$$
+Z_t = T_t + S_t + \epsilon_t,
+$$
+
+em que $T_t$ é a tendência, $S_t$ é a sazonalidade e $\epsilon_t$ é um componente aleatório, de média zero e variância $\sigma^2_{\epsilon}$.
+
+O interesse principal em considerar um modelo de decomposição será o de estimar a tendência $\hat T_t$ ou $\hat S_t$ e construir séries livres de tendência ou sazonalidade. Isto é,
+
+$$
+Z_t^* = Z_t - \hat S_t \quad \text{ (Sem sazonalidade) }
+$$
+
+ou
+
+$$
+Z_t^* = Z_t - \hat T_t \quad \text{ (Sem tendência) }
+$$
+
+#### Tendência Polinomial 
+
+Um procedimento bastante comum para estimar a tendência, é o modelo de tendência polinomial,
+
+$$
+T_t = \beta_0 + \beta_1 t + \beta_2 t^2 + \cdots + \beta_p t^p,
+$$
+
+em que $p$ é o grau do polinômio e tem que ser menor que o número de observações. Para estimar os parâmetros $\beta_j$ utiliza-se o método dos mínimos quadrados, ou seja, se resume a um problema de regressão linear.
+
+## Modelos de suavização exponencial
+
+Os métodos de previsões em séries temporais, em geral, baseia-se na ideia de que observações passadas contêm informações sobre o padrão de comportamento da série temporal. Uma técnica utilizada para entender esse comportamento da série ao longo do tempo são os modelos de suavização exponencial.
+
+Essas técnicas buscam suavizar os valores de uma série baseado no comportamento mais recente da série.
+
+### Modelos para séries localmente constantes
+
+Vamos considerar inicialmente o caso de uma série temporal $Z_1, \ldots, Z_N$, localmente composta de seu nível mais um ruído aleatório, isto é,
+
+$$
+Z_t=\mu_t+a_t, \quad t=1, \ldots, N,
+$$
+
+onde $E\left(a_t\right)=0, \operatorname{Var}\left(a_t\right)=\sigma_a^3$ e $\mu_t$ é um paràmetro desconhecido, que pode variar lentamente com o tempo.
+
+#### Médias móveis simples 
+
+-   **Procedimento**
+
+A técnica de média móvel consiste em calcular a média aritmética das \$r\$ observaçōes mais recentes, isto é.
+
+$$
+M_t=\frac{Z_t+Z_{t-1}+\cdots+Z_{t-r+1}}{r}
+$$
+
+ou
+
+$$
+M_t= M_{t-1} + \frac{Z_t-Z_{t-r}}{r}
+$$
+
+Assim, $M_t$ é uma estimativa do nivel $\mu_t$ que nāo leva em conta (ou nāo pondera) as observações mais antigas, o que é razoável devido ao fato do parâmetro variar suavemente com o tempo.
+
+O nome média móvel é utilizado porque, a cada período, a observação mais antiga é substituída pela mais recente, calculando-se uma média nova.
+
+-   **Previsāo**
+
+A previsāo de todos os valores futuros é dada pela última média móvel calculada, isto é,
+
+$$
+\hat{Z}_t(h)=\hat{Z}_{t-1}(h+1)+\frac{Z_t-Z_{t-r}}{r}, \quad \text {,h }>0 .
+$$
+
+A equação acima pode ser interpretada como um mecanismo de atualização de previsāo, pois a cada instante (ou a cada nova observaçāo) corrige a estimativa prévia $\operatorname{de} Z_{t+h}$.
+
+-   **Determinação de** $r$ **(tamanho do janelamento)**
+
+As propriedades do método dependem do número de observaçōes utilizadas na média (valor de $r$ ). Um valor grande de $r$ faz com que a previsão acompanhe lentamente as mudanças do parâmetro $\mu_t$ : um valor pequeno implica numa reaçāo mais rápida. Existem dois casos extremos:
+
+\(i\) se $r=1$, então o valor mais recente da série é utiliządo como previsão de todos os valores futuros (este é o tipo de previsāo mais simples que existe e é denominado "método ingênuo");
+
+\(ii\) se $r=N$, então a previsão será igual à média aritmética de todos os dados observados.
+
+Entretanto, como podemos encontrar um $r$ 'ótimo' para o nosso problema ? Não existe uma resposta exata para esta pergunta, porém o que podemos fazer é escolher, por exemplo, o valor de $r$ que forneça a melhor previsão.
+
+-   **Vantagens e desvantagens do método**
+
+As principais **vantagens** sāo:
+
+\(i\) simples aplicação;
+
+\(ii\) é aplicável quando se tem um número pequeno de observações;
+
+\(iii\) permite uma flexibilidade grande devido à variação de $r$ de acordo com o padrão da série:
+
+e as **desvantagens** são:
+
+\(i\) deve ser utilizado somente para prever séries estacionárias, caso contrário a precisão das previsões obtidas será muito pequena, pois os pesos atribuídos às $r$ observaçōes são todos iguais e nenhum peso é dado às observaçōes anteriores a esse período;
+
+\(ii\) necessidade de armazenar pelo menos $(r-1)$ observações; e
+
+\(iv\) dificuldade em determinar o valor de $r$.
+
+Na prática, o método de médias móveis não é utilizado frequentemente, pois o Método de Suavizaçāo Exponencial Simples, que veremos logo a seguir, possui todas as vantagens anteriores e mais algumas, que o tornam mais atraente.

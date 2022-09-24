@@ -1,7 +1,7 @@
 ---
 title: "Séries temporais"
 author: "Pedro Monteiro de Almeida Junior"
-format: pdf
+format: html
 editor: visual
 ---
 
@@ -269,9 +269,9 @@ Seja $\{Z_t, t \in \mathbb{Z}\}$ um processo estocástico real com tempo discret
 
 \(ii\) $\gamma_{-r} = \gamma_r$
 
-\(iii\) $\mid  \gamma_r \mid \leq \gamma_0$
+\(iii\) $\mid \gamma_r \mid \leq \gamma_0$
 
-### Modelo de decomposição 
+### Modelo de decomposição
 
 Toda série temporal pode ser decomposta em três componentes, como segue,
 
@@ -293,7 +293,7 @@ $$
 Z_t^* = Z_t - \hat T_t \quad \text{ (Sem tendência) }
 $$
 
-#### Tendência Polinomial 
+#### Tendência Polinomial
 
 Um procedimento bastante comum para estimar a tendência, é o modelo de tendência polinomial,
 
@@ -319,7 +319,7 @@ $$
 
 onde $E\left(a_t\right)=0, \operatorname{Var}\left(a_t\right)=\sigma_a^3$ e $\mu_t$ é um paràmetro desconhecido, que pode variar lentamente com o tempo.
 
-#### Médias móveis simples 
+#### Médias móveis simples
 
 -   **Procedimento**
 
@@ -378,3 +378,31 @@ e as **desvantagens** são:
 \(iv\) dificuldade em determinar o valor de $r$.
 
 Na prática, o método de médias móveis não é utilizado frequentemente, pois o Método de Suavizaçāo Exponencial Simples, que veremos logo a seguir, possui todas as vantagens anteriores e mais algumas, que o tornam mais atraente.
+
+### Suavização exponencial simples (SES)
+
+Em séries temporais é razoável pensar que as informações mais recentes tenham um peso maior que as informações mais antigas. Este é exatamente o conceito por trás da suavização exponencial simples. As previsões são calculadas usando médias ponderadas, onde os pesos diminuem à medida que as observações ficam mais longe do tempo atual.
+
+-   **Procedimento**
+
+Suavização exponencial simples pode ser descrita matematicamente por
+
+$$
+\hat{y}_{T+1 \mid T}=\alpha \, y_T+\alpha(1-\alpha) \,y_{T-1}+\alpha(1-\alpha)^2 \, y_{T-2}+ \, \cdots,
+$$
+
+Onde $0 \leq \alpha \leq 1$ é o parâmetro de suavização.. A previsão um passo à frente para o tempo $T+1$ é uma média ponderada de todas as observações na série $y_1, \ldots, y_T$. A taxa na qual os pesos diminuem é controlada pelo parâmetro $\alpha$.
+
+A tabela abaixo mostra os pesos anexados às observações para quatro valores diferentes de $\alpha$ ao prever usando suavização exponencial simples. Observe que a soma dos pesos, mesmo para um pequeno valor de $\alpha$ será aproximadamente um para qualquer tamanho de amostra razoável.
+
+$$
+\begin{array}{lcccc} & \alpha=0,2 & \alpha=0,4 & \alpha=0,6 & \alpha=0,8 \\\hline y_T & 0,2000 & 0,4000 & 0,6000 & 0,8000 \\\hline y_{T-1} & 0,1600 & 0,2400 & 0,2400 & 0,1600 \\\hline y_{T-2} & 0,1280 & 0,1440 & 0,0960 & 0,0320 \\\hline y_{T-3} & 0,1024 & 0,0864 & 0,0384 & 0,0064 \\\hline y_{T-4} & 0,0819 & 0,0518 & 0,0154 & 0,0013 \\\hline y_{T-5} & 0,0655 & 0,0311 & 0,0061 & 0,0003\end{array}
+$$
+
+Para qualquer $\alpha$ entre 0 e 1 , os pesos atribuídos às observações diminuem exponencialmente à medida que voltamos no tempo, daí o nome "suavização exponencial". Se $\alpha$ é pequeno (isto é, próximo de 0), mais peso é dado às observações do passado mais distante. Se $\alpha$ é grande (ou seja, próximo de 1), mais peso é dado às observações mais recentes.
+
+-   **Determinaçāo da constante** $\alpha$
+
+Quanto menor for o valor de $\alpha$ mais estáveis serão as previsões finais, uma vez que a utilização de baixo valor de $\alpha$ implica que pesos maiores serão dados às observaçōes passadas e, conseqüentemente, qualquer flutuação aleatória, no presente, exercerá um peso menor no cálculo da previsāo.
+
+Brown (1962) faz alguns comentários sobre a determinaçāo dessa constante, de acordo com alguns critérios, tais como tipo de [autocorrelação entre os dados]{.underline} e [custo de previsäo]{.underline}. Um procedimento mais objetivo é selecionar o valor que fornece a "melhor previsão" das observaçōes já obtidas.

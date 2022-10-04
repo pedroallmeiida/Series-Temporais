@@ -1,7 +1,7 @@
 ---
 title: "Séries temporais"
 author: "Pedro Monteiro de Almeida Junior"
-format: html
+format: pdf
 editor: visual
 ---
 
@@ -406,3 +406,141 @@ Para qualquer $\alpha$ entre 0 e 1 , os pesos atribuídos às observações dimi
 Quanto menor for o valor de $\alpha$ mais estáveis serão as previsões finais, uma vez que a utilização de baixo valor de $\alpha$ implica que pesos maiores serão dados às observaçōes passadas e, conseqüentemente, qualquer flutuação aleatória, no presente, exercerá um peso menor no cálculo da previsāo.
 
 Brown (1962) faz alguns comentários sobre a determinaçāo dessa constante, de acordo com alguns critérios, tais como tipo de [autocorrelação entre os dados]{.underline} e [custo de previsäo]{.underline}. Um procedimento mais objetivo é selecionar o valor que fornece a "melhor previsão" das observaçōes já obtidas.
+
+### Representação alternativa
+
+Podemos representar o modelo de suavização exponencial simples de outra maneira, através da **forma de componentes**. Para SES, o único componente incluído é o nível, $\ell_t$. (Outros métodos que são considerados posteriormente também podem incluir uma tendência $b_t$ e um componente sazonal $s_t$). As representações em forma de componentes dos métodos de suavização exponencial compreendem uma **equação de previsão** e uma **equação de suavização** para cada um dos componentes incluídos no método. A forma componente da suavização exponencial simples é dada por:
+
+$$
+\begin{align}
+&\text{Equação de previsão:} \quad \hat{y}_{t+h \mid t}=\ell_t \\ 
+&\text{Equação de suavização:} \quad \ell_t=\alpha y_t+(1-\alpha) \ell_{t-1},
+\end{align}
+$$
+
+Onde $\ell_t$ é o nível (ou o valor suavizado) da série no tempo $t$.
+
+Contexto $h=1$ fornece os valores ajustados, enquanto configura $t=T$ fornece as previsões verdadeiras além dos dados de treinamento.
+
+A equação de previsão mostra que o valor da previsão no tempo $t+1$ é o nível estimado no instante se nós substituíssemos $\ell_t \operatorname{com} \hat{y}_{t+1 \mid t} \operatorname{ e } \ell_{t-1} \operatorname{com} \hat{y}_{t \mid t-1}$ na equação de suavização, recuperaremos a forma média ponderada da suavização exponencial simples.
+
+#### Previsões fixas
+
+A [suavização exponencial simples]{.underline} tem uma função de previsão constante:
+
+$$
+\hat{y}_{T+h \mid T}=\hat{y}_{T+1 \mid T}=\ell_T, \quad h=2,3, \ldots
+$$
+
+Ou seja, todas as previsões assumem o mesmo valor, igual ao componente de último nível. Dessa forma, podemos imaginar que se a série possui tendência ou sazonalidade as previsões não serão boas.
+
+### Método com tendência
+
+#### Método de tendência linear de Holt
+
+**Holt ( 1957 )** estendeu a suavização exponencial simples para permitir a previsão de dados com tendência. Este método envolve uma equação de previsão e duas equações de suavização (uma para o nível e outra para a tendência):
+
+$$
+\begin{align}
+&\text{Equação de previsão: } \hat{y}_{t+h \mid t}=\ell_t+h b_t \\
+&\text{Equação de nível: } \ell_t=\alpha y_t+(1-\alpha)\left(\ell_{t-1}+b_{t-1}\right) \\
+&\text{Equação de tendência: } b_t=\beta^*\left(\ell_t-\ell_{t-1}\right)+\left(1-\beta^*\right) b_{t-1}
+\end{align}
+$$
+
+em que $\ell_t$ denota uma estimativa do nível da série no instante $t$, $b_t$ denota uma estimativa da tendência (inclinação) da série no instante $t$, $\alpha$ é o parâmetro de suavização para o nível, $0 \leq \alpha \leq 1$, e $\beta^*$ é o parâmetro de suavização para a tendência, $0 \leq \beta^* \leq 1$.
+
+Assim como na suavização exponencial simples, a equação de nível aqui mostra que $\ell_t$ é uma média ponderada de observação $y_t$ e a previsão de treinamento um passo à frente para o tempo $t$, aqui dado por $\ell_{t-1}+b_{t-1}$. A equação de tendência mostra que $b_t$ é uma média ponderada da tendência estimada no instante $t$ baseado em $\ell_t-\ell_{t-1} \operatorname{ e } b_{t-1}$, a estimativa anterior da tendência.
+
+**A função de previsão não é mais constante**. A previsão $h$ passos a frente é igual ao último nível estimado mais $h$ vezes o último valor de tendência estimado. Portanto, as previsões são uma função linear de $h$.
+
+#### Métodos de tendência amortecida
+
+As previsões geradas pelo método linear de Holt apresentam uma tendência constante (aumentando ou diminuindo) indefinidamente no futuro. Evidências empíricas indicam que esses métodos tendem a superestimar, especialmente para horizontes de previsão mais longos. Motivados por esta observação, **Gardner & McKenzie ( 1985 )** introduziram um parâmetro que "amortece" a tendência para uma linha plana em algum momento no futuro.
+
+Em conjunto com os parâmetros de suavização $\alpha \operatorname{ e } \beta^*$ (com valores entre 0 e 1 como no método de Holt), este método também inclui um parâmetro de amortecimento $0<\phi<1$ :
+
+$$
+\begin{aligned}\hat{y}_{t+h \mid t} &=\ell_t+\left(\phi+\phi^2+\cdots+\phi^h\right) b_t \\\ell_t &=\alpha y_t+(1-\alpha)\left(\ell_{t-1}+\phi b_{t-1}\right) \\b_t &=\beta^*\left(\ell_t-\ell_{t-1}\right)+\left(1-\beta^*\right) \phi b_{t-1}\end{aligned}
+$$
+
+$\operatorname{se} \phi=1$, o método é idêntico ao método linear de Holt. Para valores entre 0 e 1, $\phi$ amortece a tendência para que ela se aproxime de uma constante em algum momento no futuro. De fato, as previsões convergem para $\ell_T+\phi b_T /(1-\phi)$ Como $h \rightarrow \infty$ para qualquer valor $0<\phi<1$. Isso significa que as previsões de curto prazo são tendenciosas, enquanto as previsões de longo prazo são constantes.
+
+Na prática, $\phi$ raramente é inferior a 0,8 , pois o amortecimento tem um efeito muito forte para valores menores. Valores de $\phi$ próximo de 1 significa que um modelo amortecido não pode ser distinguido de um modelo não amortecido. Por essas razões, geralmente restringimos $\phi$ mínimo de 0,8 e máximo de 0,98.
+
+### Métodos com sazonalidade
+
+Holt ( 1957 ) e Winters ( 1960 ) estenderam o método de Holt para capturar a sazonalidade. O método sazonal de HoltWinters compreende a equação de previsão e três equações de suavização - uma para o nível $\ell_t$, um para a tendência $b_t$, e um para o componente sazonal $s_t$, com parâmetros de suavização correspondentes $\alpha, \beta^*$ e $\gamma$. Usamos $m$ para denotar o período da sazonalidade, ou seja, o número de estações em um ano. Por exemplo, para dados trimestrais $m=4$, e para dados mensais $m=12$.
+
+Existem duas variações para este método que diferem na natureza do componente sazonal. O **método aditivo** é preferido quando as variações sazonais são aproximadamente constantes ao longo da série, enquanto o **método multiplicativo** é preferido quando as variações sazonais estão mudando proporcionalmente ao nível da série. Com o método aditivo, o componente sazonal é expresso em termos absolutos na escala da série observada, e na equação de nível a série é ajustada sazonalmente subtraindo-se o componente sazonal. Dentro de cada ano, o componente sazonal somará aproximadamente expresso em termos relativos (porcentagens), e a série é ajustada sazonalmente dividindo-se pelo componente sazonal. Dentro de cada ano, $m$.
+
+#### Método aditivo de Holt-Winters
+
+A forma de componente para o método aditivo é:
+
+$$
+\begin{aligned}
+\hat{y}_{t+h \mid t} &=\ell_t+h b_t+s_{t+h-m(k+1)} \\\ell_t &=\alpha\left(y_t-s_{t-m}\right)+(1-\alpha)\left(\ell_{t-1}+b_{t-1}\right) \\b_t &=\beta^*\left(\ell_t-\ell_{t-1}\right)+\left(1-\beta^*\right) b_{t-1} \\s_t &=\gamma\left(y_t-\ell_{t-1}-b_{t-1}\right)+(1-\gamma) s_{t-m}
+\end{aligned}
+$$
+
+em que $k$ é a parte inteira de $(h-1) / m$, que garante que as estimativas dos índices sazonais utilizados para a previsão sejam provenientes do último ano da amostra. A equação de nível mostra uma média ponderada entre a observação ajustada sazonalmente $\left(y_t-s_{t-m}\right)$ e a previsão não sazonal $\left(\ell_{t-1}+b_{t-1}\right)$ por instante $t$. A equação de tendência é idêntica ao método linear de Holt. A equação sazonal mostra uma média ponderada entre o índice sazonal atual, $\left(y_t-\ell_{t-1}-b_{t-1}\right)$, e o índice sazonal da mesma estação do ano passado (ou seja, $m$ períodos de tempo atrás).
+
+#### Método multiplicativo de Holt-Winters
+
+A forma de componente para o [método multiplicativo]{.underline} é:
+
+$$
+\begin{aligned}
+\hat{y}_{t+h \mid t} &=\left(\ell_t+h b_t\right) s_{t+h-m(k+1)} \\\ell_t &=\alpha \frac{y_t}{s_{t-m}}+(1-\alpha)\left(\ell_{t-1}+b_{t-1}\right) \\b_t &=\beta^*\left(\ell_t-\ell_{t-1}\right)+\left(1-\beta^*\right) b_{t-1} \\s_t &=\gamma \frac{y_t}{\left(\ell_{t-1}+b_{t-1}\right)}+(1-\gamma) s_{t-m} .
+\end{aligned}
+$$
+
+#### 
+
+#### Exemplo: viagens domésticas noturnas na Austrália
+
+Aplicamos o método de Holt-Winters com sazonalidade aditiva e multiplicativa para prever turismo doméstico noturno na Austrália. A Figura seguinte mostra os dados de $1998-2017$ e as previsões para $2018 \text{ e } 2020$. Os dados mostram um padrão sazonal evidente, com picos observados no trimestre de março de cada ano, correspondendo ao verão australiano.
+
+```{r}
+library(forecast) 
+library(fpp3)
+
+aus_holidays <- tourism %>%
+  filter(Purpose == "Holiday") %>%
+  summarise(Trips = sum(Trips)/1e3)
+
+fit <- aus_holidays %>%
+  model(
+    additive = ETS(Trips ~ error("A") + trend("A") +
+                                                season("A")),
+    multiplicative = ETS(Trips ~ error("M") + trend("A") +
+                                                season("M"))
+  )
+
+fc <- fit %>% forecast(h = "3 years")
+
+fc %>%
+  autoplot(aus_holidays, level = NULL) +
+  labs(title="Turismo doméstico Austrália",
+       y="Viagens noturnas (millions)") +
+  guides(colour = guide_legend(title = "Forecast"))
+
+```
+
+#### Taxonomia dos métodos de suavização exponencial
+
+$$
+\begin{array}{cccc}
+\text { Trend Component } & \text { Seasonal Component } \\& \mathrm{N} & \mathrm{A} & \mathrm{M} \\\hline 
+ & \text { (None) } & \text { (Additive) } & \text { (Multiplicative) } \\\hline 
+\mathrm{N} \text { (None) } & (\mathrm{N}, \mathrm{N}) & (\mathrm{N}, \mathrm{A}) & (\mathrm{N}, \mathrm{M}) \\\hline 
+\text { A (Additive) } & (\mathrm{A}, \mathrm{N}) & (\mathrm{A}, \mathrm{A}) & (\mathrm{A}, \mathrm{M}) \\\hline 
+\mathrm{A}_d \text { (Additive damped) } & \left(\mathrm{A}_d, \mathrm{~N}\right) & \left(\mathrm{A}_d, \mathrm{~A}\right) & \left(\mathrm{A}_d, \mathrm{M}\right)\end{array}
+$$
+
+Alguns desses métodos são resumidos a seguir:
+
+$$
+\begin{array}{ll}\text { Short hand } & \text { Method } \\\hline(\mathrm{N}, \mathrm{N}) & \text { Simple exponential smoothing } \\\hline(\mathrm{A}, \mathrm{N}) & \text { Holt's linear method } \\\hline\left(\mathrm{A}_d, \mathrm{~N}\right) & \text { Additive damped trend method } \\\hline(\mathrm{A}, \mathrm{A}) & \text { Additive Holt-Winters' method } \\\hline(\mathrm{A}, \mathrm{M}) & \text { Multiplicative Holt-Winters' method } \\\hline\left(\mathrm{A}_d, \mathrm{M}\right) & \text { Holt-Winters' damped method }\end{array}
+$$

@@ -12,6 +12,8 @@ serie <- tute1 %>%
   mutate(Quarter = yearmonth(Quarter)) %>%
   as_tsibble(index = Quarter)
 serie
+tail(serie)
+
 
 ### Plot das series
 serie %>%
@@ -79,19 +81,28 @@ tail(serie)
 
 # Definindo a base de dados em treinamento e teste
 train <- serie %>%
-  filter_index("1981 Q1" ~ "2005 Q1")
+  filter_index("1981 mar" ~ "2004 dec")
+tail(train)
+
 test <- serie %>%
-  filter_index("2005 Q1" ~ .);test
+  filter_index("2005 mar" ~ .);test
 
 ### verificando se esta correto
-head(train)
-tail(train)
+head(test)
+tail(test)
 
 # Estimando o modelo de suavizacao
 sales_fit <- train %>%
   model(
-    ETS = ETS(Sales)
-  )
+    ETS1 = ETS( Sales ~ error("A") + trend("N") + season("N") ),
+    ETS2 = ETS( Sales ~ error("A") + trend("A") + season("N") ),
+    ETS3 = ETS( Sales ~ error("A") + trend("M") + season("N") ),
+    ETS4 = ETS( Sales ~ error("A") + trend( "N" ) + season("A")),
+    ETS5 = ETS( Sales ~ error("A") + trend( "N" ) + season("M")) 
+    )
+sales_fit
+
+
 
 # GERANDO UMA PREVISAO h = 4 passos 
 sales_fc <- sales_fit %>% forecast(h = 4)
@@ -105,8 +116,8 @@ sales_fc %>%
     colour = "black"
   ) +
   labs(
-    y = "Megalitres",
-    title = "Forecasts for quarterly beer production"
+    y = "Quantidade de vendas",
+    title = "Previsão de vendas trimestrais para vendas em 2005"
   ) +
   guides(colour = guide_legend(title = "Forecast"))
 
@@ -118,6 +129,39 @@ sales_fit %>% gg_tsresiduals()
 
 ### MEdidas de avaliacao 
 accuracy(sales_fc, test)
+
+
+#### DEPOIS QUE A ESCOLHA DO MELHOR MODELO FOR FEITA FAÇA A PREVISAO PARA VALORES FUTUROS 
+## NEsse exemplo dado que o melhor modelo foi o ETS5, vamos usar ele para fazer as previsões
+
+##
+
+# Estimando o modelo de suavizacao
+sales_fit <- serie %>%
+  model(
+    ETS5 = ETS( Sales ~ error("A") + trend( "N" ) + season("M")) 
+  )
+sales_fit
+
+
+
+# GERANDO UMA PREVISAO h = 4 passos 
+sales_fc <- sales_fit %>% forecast(h = 4)
+sales_fc
+
+# Grafico da serie com as previsoes 
+sales_fc %>%
+  autoplot(serie, level = NULL) +
+  autolayer(
+    test,
+    colour = "black"
+  ) +
+  labs(
+    y = "Quantidade de vendas",
+    title = "Previsão de vendas trimestrais para vendas em 2005"
+  ) +
+  guides(colour = guide_legend(title = "Forecast"))
+
 
 
 

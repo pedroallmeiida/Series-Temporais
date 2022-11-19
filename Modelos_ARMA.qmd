@@ -1,6 +1,6 @@
 ---
 title: "Modelos Autoregressivos de médias móveis (ARMA)"
-format: html
+format: pdf
 editor: visual
 ---
 
@@ -184,26 +184,26 @@ Em um modelo de regressão múltipla, predizemos a variável de interesse usando
 Definição: Um modelo autoregressivo de ordem $p$ pode ser escrito como:
 
 $$
-y_t= \alpha +\phi_1 y_{t-1}+\phi_2 y_{t-2}+\cdots+\phi_p y_{t-p}+\varepsilon_t
+y_t= \alpha +\phi_1 y_{t-1}+\phi_2 y_{t-2}+\cdots+\phi_p y_{t-p}+w_t
 $$
 
-em que $\varepsilon_t$ é um ruído branco Gaussiano, $\phi_1, \ldots, \phi_p$ são constantes, $y_{t-1}, \ldots, y_{t-p}$ são os valores das séries defasadas no tempo e $\alpha = \mu( 1 - \phi_1 - \cdots - \phi_p )$.
+em que $w_t$ é um ruído branco Gaussiano com média zero e variância $\sigma^2_w$, $\phi_1, \ldots, \phi_p$ são constantes, $y_{t-1}, \ldots, y_{t-p}$ são os valores das séries defasadas no tempo e $\alpha = \mu( 1 - \phi_1 - \cdots - \phi_p )$.
 
 #### Forma usando o operador diferença
 
 É bastante comum escrever a equação anterior usando o operador diferença da seguinte forma:
 
 $$
-\left( 1 - \phi_1 B - \phi_2 B^2 - \cdots - \phi_p B^p   \right) y_t = \epsilon_t,  
+\left( 1 - \phi_1 B - \phi_2 B^2 - \cdots - \phi_p B^p   \right) y_t = w_t,  
 $$
 
 ou de forma mais compacta como
 
 $$
-\phi( B ) y_t = \epsilon_t,  
+\phi( B ) y_t = w_t,  
 $$
 
-em que $\phi(B) =\left( 1 - \phi_1 B - \phi_2 B^2 - \cdots - \phi_p B^p   \right)$.
+em que $\phi(B) =\left( 1 - \phi_1 B - \phi_2 B^2 - \cdots - \phi_p B^p \right)$.
 
 **OBS:** um modelo autorregressivo de ordem $p$ é denominado como $\operatorname{AR}(p)$.
 
@@ -221,30 +221,186 @@ t6 <- arima.sim(list(order = c(1,0,0), ar = 0.01), n = 200)
 
 ```
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 
 ts.plot(t6, main = " Modelo AR(1) com phi = 0.01 ")
 ts.plot(t1, main = " Modelo AR(1) com phi = 0.1 ")
 
 ```
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 ts.plot(t2, main = " Modelo AR(1) com phi = 0.5 ")
 ts.plot(t3, main = " Modelo AR(1) com phi = -0.5 ")
 
 ```
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 ts.plot(t4, main = " Modelo AR(1) com phi = 0.8 ")
-ts.plot(t5, main = " Modelo AR(1) com phi = 0.8 ")
+ts.plot(t5, main = " Modelo AR(1) com phi = -0.8 ")
 ```
 
 #### Região de estabilidade
 
 Os modelos autorregressivos são restritos a dados estacionários, caso em que algumas restrições nos valores dos parâmetros são necessárias.
 
--   Para um modelo AR(1): $-1< <\phi_1<1$.
+-   Para um modelo AR(1): $-1<\phi_1<1$.
 
 -   Para um modelo AR(2): $-1 < \phi_2 < 1$, $\phi_1+\phi_2<1$ e $\phi_2-\phi_1 < 1$
 
 Quando $p \geq 3$, as restrições são muito mais complicadas.
+
+#### Processo de Médias Móveis
+
+Uma alternativa aos processos autoregressivos, é o modelo Médias Móveis de ordem $q$ ( Moving Average - MA($q$) ). Seja $w_t$ um ruído branco gaussiano ( $w_t \sim RB( 0, \sigma^2_w )$ ), então definimos um processo de médias movéis de ordem $q$ como:
+
+$$
+y_t= w_t +\theta_1 w_{t-1}+\theta_2 w_{t-2}+\cdots+\theta_q w_{t-q}, 
+$$
+
+em que $q$ são os lags no processo MA e $\theta_1, \ldots, \theta_q$ são os parâmetros do modelo.
+
+Usando o operador de médias móveis
+
+$$
+\theta(B) = 1 + \theta_1 B + \theta_2 B^2 + \cdots + \theta_q B^q
+$$
+
+Podemos escrever o processo MA($q$) da seguinte forma:
+
+$$
+y_t = \theta (B) w_t.
+$$
+
+#### Processo Autoregressivo de médias móveis (ARMA)
+
+Uma série temporal $y_t$ é um processo ARMA($p, q$) se é estacionário e
+
+$$
+y_t = \alpha +\phi_1 y_{t-1}+\phi_2 y_{t-2}+\cdots+\phi_p y_{t-p}+ w_t +\theta_1 w_{t-1}+\theta_2 w_{t-2}+\cdots+\theta_q w_{t-q},
+$$
+
+em que $\phi_p \neq 0$, $\theta_q \neq 0$ e $\sigma^2_w > 0$. Os parâmetros $p$ e $q$ são as ordens dos modelos autoregressivo e médias móveis, respectivamente.
+
+Em particular, o modelo ARMA($p, q$) pode ser escrito de forma concisa como:
+
+$$
+\phi(B) y_t = \theta (B) w_t
+$$
+
+esse é um processo causal e invertível.
+
+#### Autocorrelação e autocorrelação parcial nos processos AR e MA
+
+-   A autocorrelação define um processo MA(q):
+
+    ```{r, warning=FALSE, message=FALSE}
+    ### Modelo MA(1) 
+    t1 <- arima.sim(list(order = c(0,0,1), ma = 0.8), n = 200)
+    ts.plot(t1, main = " Modelo MA(1) com theta = 0.8 ")
+    acf(t1)
+    pacf(t1)
+
+    ### Modelo MA(2) 
+    t2 <- arima.sim(list(order = c(0,0,2), ma = c(0.8,-0.5) ), n = 200)
+    ts.plot(t2, main = " Modelo MA(2) com theta1 = 0.8 e theta2 = -0.5")
+    acf(t2)
+    pacf(t2)
+
+
+    ```
+
+-   A autocorrelação parcial define um processo AR(p)
+
+```{r, warning=FALSE, message=FALSE}
+
+### Modelo AR(1) 
+t1 <- arima.sim(list(order = c(1,0,0), ar = 0.8), n = 200)
+ts.plot(t1, main = " Modelo AR(1) com phi = 0.8 ")
+acf(t1)
+pacf(t1)
+
+### Modelo AR(2) 
+t2 <- arima.sim(list(order = c(2,0,0), ar = c(0.8,-0.5) ), n = 200)
+ts.plot(t2, main = " Modelo AR(2) com phi1 = 0.8 e phi2 = -0.5")
+acf(t2)
+pacf(t2)
+
+```
+
+A autocorrelação de um processo MA($q$) é igual a zero para os lags \> $q$ e a autocorrelação parcial de um processo AR($p$) é zero para lags \> $p$. Portanto, os gráficos da ACF e PACF podem auxiliar a escolha das ordens dos modelos AR e MA. Entretanto, adicionalmente deve ser usado critérios de seleção de modelos para a escolha dos modelos.
+
+#### Observação sobre o inverso do operador diferença
+
+```{r, message=FALSE, warning=FALSE}
+
+set.seed(100)
+y=rpois(10, 5)    # serie original
+dy=diff(y)     # diff ordem 1
+invdy= cumsum(c(y[1],dy)) # serie diff inversa 
+cbind(y, dy, invdy)
+
+```
+
+Entretanto, não precisamos nos preocupar com isso. Pois, o próprio R já faz isso. A seguir, vamos apresentar o modelo que incorpora as diferenciações no modelo.
+
+### Modelos Autoregressivos integrados de médias móveis (ARIMA)
+
+Se combinarmos diferenciação com autorregressão e um modelo de média móvel, obtemos um modelo ARIMA não sazonal. ARIMA é um acrônimo para *AutoRegressive Integrated Moving Average*. O modelo completo pode ser escrito como
+
+$$
+y_t^{\prime}=c+\phi_1 y_{t-1}^{\prime}+\cdots+\phi_p y_{t-p}^{\prime}+\theta_1 w_{t-1}+\cdots+\theta_q w_{t-q}+ w_t
+$$
+
+em que $y_t^{\prime}$ é a série diferenciada (pode ter sido diferenciada mais de uma vez). Os "preditores" no lado direito incluem ambos os valores defasados de $y_t$ e $w_t$. Chamamos isso de $\operatorname{ARIMA}(p, d, q)$ modelo, onde
+
+-   $p=$ ordem da parte autorregressiva;
+
+-   $d=$ grau de primeira diferenciação envolvido;
+
+-   $q=$ ordem da parte média móvel.
+
+**Observação:** As mesmas condições de estacionaridade e invertibilidade usadas para modelos autorregressivos e de média móvel também se aplicam a um modelo ARIMA.
+
+Muitos dos modelos que já discutimos são casos especiais do modelo ARIMA, conforme a seguir:
+
+-   Ruído branco: $\operatorname{ARIMA}(0, 0, 0)$
+
+-   Autoregressivo (AR): $\operatorname{ARIMA}(p, 0, 0)$
+
+-   Médias Móveis (MA): $\operatorname{ARIMA}(0, 0, q)$
+
+-   Autoregressivo de Médias Móveis (ARMA): $\operatorname{ARIMA}(p, 0, q)$
+
+Aplicando o operador diferença, podemos representar o modelo $\operatorname{ARIMA}(p, d, q)$ como
+
+$$
+\left(1-\phi_1 B-\cdots-\phi_p B^p\right) \quad(1-B)^d y_t=c+\left(1+\theta_1 B+\cdots+\theta_q B^q\right) w_t.
+$$
+
+### Critérios de informação
+
+*Akaike's Information Criterion* (AIC) é usado para determinar a ordem de um modelo ARIMA. Pode ser escrito como
+
+$$
+\mathrm{AIC}=-2 \log (L)+2(p+q+k+1),
+$$
+
+em que $L$ é a verossimilhança dos dados, $k=1$ se $c \neq 0$ e $k=0$ se $c=0$. Note que o último termo em parênteses é o número de parâmetros do modelo ( incluindo a variância dos resíduos, $\sigma^2_w$ ).
+
+Para modelos ARIMA, o AIC corrigido pode ser escrito como
+
+$$
+\mathrm{AICc}=\mathrm{AIC}+\frac{2(p+q+k+1)(p+q+k+2)}{T-p-q-k-2}
+$$
+
+em que $T$ é o tamanho da amostra.
+
+Por fim, o *Bayesian Information Criterion* (BIC) pode ser definido como
+
+$$
+\mathrm{BIC}=\mathrm{AIC}+[\log (T)-2](p+q+k+1)
+$$
+
+Bons modelos são obtidos minimizando o AIC, AICc ou BIC. É preferível usar o AICc.
+
+É importante notar que esses critérios de informação tendem a não ser bons guias para selecionar a ordem apropriada de diferenciação $(d)$ de um modelo, mas apenas para selecionar os valores de $p$ e $q$. Isso ocorre porque a diferenciação altera os dados nos quais a verossimilhança é calculada, tornando os valores de AIC entre modelos com diferentes ordens de diferenciação não comparáveis. Então, precisamos usar alguma outra abordagem para escolher $d$ , e então podemos usar o AICc para selecionar $p$ e $q$.

@@ -1,4 +1,4 @@
-# Series-Temporais
+# Séries Temporais
 
 Repositório da disciplina de séries temporais da Universidade Estadual da Paraíba
 

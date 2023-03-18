@@ -1,0 +1,97 @@
+---
+title: "Conceitos teóricos em séries temporais"
+title-slide-attributes:
+  data-background-image: Marca_UEPB.png
+  data-background-size: contain
+  data-background-opacity: "0.1"
+author: "Pedro Monteiro de Almeida Junior"
+format: 
+  revealjs: 
+    logo: Marca_UEPB.png
+    theme: solarized
+    transition: slide
+    background-transition: fade
+    smaller: false
+    scrollable: true
+knitr:
+  opts_chunk:
+    message: false
+    warning: false
+css: hscroll.css
+---
+
+
+# Modelos para séries temporais
+
+- Os modelos em séries temporais controlados por leis probabilísticas, são baseados na teoria de um processo estocástico. 
+
+- A construção desses modelos depende de vários fatores, tais como a natureza dos dados, objetivo da análise e comportamento da série. 
+
+- Dessa forma, o leque de opções de modelos que podemos aplicar são muitos, inclusive modelos não probabilísticos também podem ser usados (Redes neurais, deep learning, etc ...).
+
+# Processos estocásticos
+
+::: {style="height:500px; overflow:auto; font-size:30px"}
+
+
+ [**Definição:**]{.underline}  Seja $\tau$ um conjunto arbitrário. Um processo estocástico é uma família $Z = \{ Z_t, t \in \tau \}$, tal que, para cada $t \in \tau$, $Z_t$ é uma variável aleatória.
+
+
+Nessas condições, um processo estocástico é uma família de variáveis aleatórias, que supomos definidas num mesmo espaço de probabilidade $( \Omega, \mathcal{A}, \mathcal{P} )$. 
+Cada $t \in \mathbb{Z}$, tal que $Z_t$ seja uma variável aleatória. 
+
+Na Figura a seguir, podemos ilustrar um processo estocástico como uma família de trajetórias.
+
+![Fonte: Morettin & Toloi (2018)](processos.png)
+
+**Observação:** Uma série temporal é uma realização de um processo estocástico, isto é, $Z_t^{(j)}$ para algum $j = 1, \ldots, n$.
+:::
+
+
+
+
+## Processos estocásticos estacionários
+
+:::{style="font-size:30px"}
+
+**Definição:** Um processo estocástico $Z=\{Z(t), t \in \tau\}$ diz-se estritamente estacionário se todas as distribuições finito-dimensionais permanecem as mesmas sob translações no tempo, ou seja,
+
+$$
+F\left(z_1, \ldots, z_n ; t_1+\tau, \ldots, t_n+\tau\right)=F\left(z_1, \ldots, z_n ; t_1, \ldots, t_n\right)
+$$
+
+para quaisquer $t_1, \ldots, t_n, \tau$.
+
+Isto significa, em particular, que todas as distribuições unidimensionais são invariantes sob translações do tempo, logo a média $\mu(t)$ e a variância $V(t)$ são constantes, isto é,
+
+$$
+\mu(t)=\mu, \quad V(t)=\sigma^2,
+$$
+
+para todo $t \in \tau$. Sem perda de generalidade, podemos supor que $\mu=0$; caso contrário, considere o processo $\{Z(t)-\mu\}$.
+
+:::
+
+## Processo fracamente estacionário
+
+**Definição:** Um processo estocástico $Z=\{Z(t), t \in T\}$ diz-se fracamente estacionário ou estacionário de segunda ordem (ou em sentido amplo) se e somente se
+
+\(i\) $E\{Z(t)\}=\mu(t)=\mu$, constante, para todo $t \in T_{\text {; }}$
+
+\(ii\) $E\left\{Z^2(t)\right\}<\infty$, para todo $t \in T$;
+
+\(iii\) $\gamma\left(t_1, t_2\right)=\operatorname{Cov}\left\{Z\left(t_1\right), Z\left(t_2\right)\right\}$ é uma função de $\left|t_1-t_2\right|$.
+
+## Função de autocovariância
+
+Seja $\{Z_t, t \in \mathbb{Z}\}$ um processo estocástico real com tempo discreto, de média zero e função de autocovariância (FACV) $\gamma_r = \mathbf{E}( Z_t Z_{t-r} )$.
+
+
+**Proposição**: A FACV $\gamma_r$ satisfaz as seguintes propriedades:
+
+\(i\) $\gamma_0 > 0$
+
+\(ii\) $\gamma_{-r} = \gamma_r$
+
+\(iii\) $\mid \gamma_r \mid \leq \gamma_0$
+

@@ -1,0 +1,137 @@
+---
+title: "Primeiros passos para visualização de séries"
+author: "Pedro Almeida"
+format: html
+editor: visual
+---
+
+# Visualização de dados temporais
+
+```{r, echo = T, warning=F, message=F}
+
+## Bibliotecas de séries temporais
+library(TSA)
+library(forecast)
+library(fpp3)
+
+
+```
+
+```{r, warning=F, message = F}
+
+### Carregando banco de dados em formato csv
+tute1 <- readr::read_csv("C:/Users/pedro/Dropbox/disciplinas_UEPB/Series_Temporais/tute1.csv")
+head(tute1)
+
+
+```
+
+## Formato TS
+
+```{r}
+## Transformando a variavel Sales no formato TS
+y = ts( tute1$Sales, start = 1981,end = 2005,  frequency = 4  )
+
+plot.ts( y  )
+
+
+```
+
+```{r}
+
+plot(decompose(y))
+
+
+```
+
+## Usando o formato tstible
+
+```{r}
+
+
+### transformando para o formato tstible
+serie <- tute1 %>%
+  mutate(Quarter = yearmonth(Quarter)) %>%
+  as_tsibble(index = Quarter)
+serie
+
+
+
+
+```
+
+```{r}
+
+
+### Plot das series
+serie %>%
+  pivot_longer(-Quarter) %>%
+  ggplot(aes(x = Quarter, y = value, colour = name)) +
+  geom_line() +
+  facet_grid(name ~ ., scales = "free_y")
+
+
+
+```
+
+## Extraindo os componentes de uma serie temporal
+
+### Decomposição aditiva
+
+```{r}
+
+serie %>%
+  model(
+    classical_decomposition(Sales, type = "additive")
+  ) %>%
+  components() %>%
+  autoplot() +
+  labs(title = "Decomposição classica aditiva do total de vendas")
+
+
+```
+
+### Decomposição multiplicativa
+
+```{r}
+
+serie %>%
+  model(
+    classical_decomposition(Sales, type = "multiplicative")
+  ) %>%
+  components() %>%
+  autoplot() +
+  labs(title = "Decomposição classica aditiva do total de vendas")
+
+
+```
+
+## Identificando se existe sazonalidade na série
+
+```{r}
+
+### Estudando a sazonalidade
+
+serie %>%
+  gg_season(Sales, labels = "both") +
+  labs(y = "Quantidade de vendas",
+       title = "Sazonalidade: Sales")
+
+
+
+```
+
+```{r}
+
+### subgraficos 
+
+serie %>%
+  gg_subseries(Sales) +
+  labs(
+    y = "Quantidade de vendas",
+    title = "Sazonalidade: Sales"
+  )
+
+
+
+```

@@ -21,6 +21,7 @@ css: hscroll.css
 ---
 
 
+::: {style="height:500px; font-size:30px; margin-left: 5px; margin-right: 5px"}
 
 # Modelo de decomposição
 
@@ -43,6 +44,8 @@ ou
 $$
 Z_t^* = Z_t - \hat T_t \quad \text{ (Sem tendência) }
 $$
+:::
+
 
 ## Tendência Polinomial
 

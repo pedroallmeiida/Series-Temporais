@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.0.36">
 
   <meta name="author" content="Pedro Monteiro de Almeida Junior">
-  <title>Modelos de suavizações</title>
+  <title>Modelos de suavização</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -385,12 +385,11 @@
     <div class="slides">
 
 <section id="title-slide" data-background-image="Marca_UEPB.png" data-background-opacity="0.1" data-background-size="contain" class="center">
-  <h1 class="title">Modelos de suavizações</h1>
+  <h1 class="title">Modelos de suavização</h1>
   <p class="author">Pedro Monteiro de Almeida Junior</p>
 </section>
 
-<section>
-<section id="modelo-de-decomposição" class="title-slide slide level1 center">
+<section id="modelo-de-decomposição" class="title-slide slide level1 center" style="height:500px; font-size:30px; margin-left: 5px; margin-right: 5px">
 <h1>Modelo de decomposição</h1>
 <p>Toda série temporal pode ser decomposta em três componentes, como segue,</p>
 <p><span class="math display">\[
@@ -406,6 +405,7 @@ Z_t^* = Z_t - \hat S_t \quad \text{ (Sem sazonalidade) }
 Z_t^* = Z_t - \hat T_t \quad \text{ (Sem tendência) }
 \]</span></p>
 </section>
+
 <section id="tendência-polinomial" class="slide level2">
 <h2>Tendência Polinomial</h2>
 <p>Um procedimento bastante comum para estimar a tendência, é o modelo de tendência polinomial,</p>
@@ -413,7 +413,7 @@ Z_t^* = Z_t - \hat T_t \quad \text{ (Sem tendência) }
 T_t = \beta_0 + \beta_1 t + \beta_2 t^2 + \cdots + \beta_p t^p,
 \]</span></p>
 <p>em que <span class="math inline">\(p\)</span> é o grau do polinômio e tem que ser menor que o número de observações. Para estimar os parâmetros <span class="math inline">\(\beta_j\)</span> utiliza-se o método dos mínimos quadrados, ou seja, se resume a um problema de regressão linear.</p>
-</section></section>
+</section>
 <section id="modelos-de-suavização-exponencial" class="title-slide slide level1 center" style="font-size:35px">
 <h1>Modelos de suavização exponencial</h1>
 <ul>

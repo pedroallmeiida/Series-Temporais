@@ -1,0 +1,24 @@
+---
+title: "Projeto prático 1- Séries temporais"
+author: "Pedro Almeida"
+format: html
+editor: visual
+---
+
+## Projeto de séries temporais
+
+O desenvolvimento do projeto objetiva-se a apresentação dos seguintes tópicos:
+
+-   Introdução sobre o tema do projeto
+
+-   Contextualizar o problema e propor uma solução usando séries temporais
+
+-   Falar sobre os modelos de suavização exponencial (ETS)
+
+-   Explicar as principais características das séries (Possui tendência, sazonalidade ?)
+
+-   Realizar uma análise descritiva dos seus dados, explicando em detalhes suas características
+
+-   Realizar um processo de previsão e justificar a escolha do melhor modelo para fazer previsão
+
+-   Interpretar os resultados finais e propor uma solução com base nos dados para o seu problema

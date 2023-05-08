@@ -20,9 +20,7 @@ knitr:
 css: hscroll.css
 ---
 
-
 ::: {style="height:500px; font-size:30px; margin-left: 5px; margin-right: 5px"}
-
 # Modelo de decomposição
 
 Toda série temporal pode ser decomposta em três componentes, como segue,
@@ -46,7 +44,6 @@ Z_t^* = Z_t - \hat T_t \quad \text{ (Sem tendência) }
 $$
 :::
 
-
 ## Tendência Polinomial
 
 Um procedimento bastante comum para estimar a tendência, é o modelo de tendência polinomial,
@@ -57,21 +54,17 @@ $$
 
 em que $p$ é o grau do polinômio e tem que ser menor que o número de observações. Para estimar os parâmetros $\beta_j$ utiliza-se o método dos mínimos quadrados, ou seja, se resume a um problema de regressão linear.
 
-:::{style="font-size:35px"}
-
+::: {style="font-size:35px"}
 # Modelos de suavização exponencial
 
-- Os métodos de previsões em séries temporais, em geral, baseia-se na ideia de que observações passadas contêm informações sobre o padrão de comportamento da série temporal. 
+-   Os métodos de previsões em séries temporais, em geral, baseia-se na ideia de que observações passadas contêm informações sobre o padrão de comportamento da série temporal.
 
-- Uma técnica utilizada para entender esse comportamento da série ao longo do tempo são os modelos de suavização exponencial.
+-   Uma técnica utilizada para entender esse comportamento da série ao longo do tempo são os modelos de suavização exponencial.
 
-- Essas técnicas buscam suavizar os valores de uma série baseado no comportamento mais recente da série.
-
+-   Essas técnicas buscam suavizar os valores de uma série baseado no comportamento mais recente da série.
 :::
 
-:::{style="font-size:35px"}
-
-
+::: {style="font-size:35px"}
 ## Modelos para séries localmente constantes
 
 Vamos considerar inicialmente o caso de uma série temporal $Z_1, \ldots, Z_N$, localmente composta de seu nível mais um ruído aleatório, isto é,
@@ -81,7 +74,6 @@ Z_t=\mu_t+a_t, \quad t=1, \ldots, N,
 $$
 
 onde $E\left(a_t\right)=0, \operatorname{Var}\left(a_t\right)=\sigma_a^3$ e $\mu_t$ é um parâmetro desconhecido, que pode variar lentamente com o tempo.
-
 :::
 
 # Médias móveis simples
@@ -102,9 +94,9 @@ $$
 
 Assim, $M_t$ é uma estimativa do nível $\mu_t$ que nāo leva em conta (ou nāo pondera) as observações mais antigas, o que é razoável devido ao fato do parâmetro variar suavemente com o tempo.
 
-- O nome média móvel é utilizado porque, a cada período, a observação mais antiga é substituída pela mais recente, calculando-se uma média nova.
+-   O nome média móvel é utilizado porque, a cada período, a observação mais antiga é substituída pela mais recente, calculando-se uma média nova.
 
-## Previsāo 
+## Previsāo
 
 A previsāo de todos os valores futuros é dada pela última média móvel calculada, isto é,
 
@@ -116,13 +108,13 @@ A equação acima pode ser interpretada como um mecanismo de atualização de pr
 
 ## Determinação de $r$ (tamanho do janelamento)
 
-- As propriedades do método dependem do número de observaçōes utilizadas na média (valor de $r$ ). 
+-   As propriedades do método dependem do número de observaçōes utilizadas na média (valor de $r$ ).
 
-- Um valor grande de $r$ faz com que a previsão acompanhe lentamente as mudanças do parâmetro $\mu_t$. 
+-   Um valor grande de $r$ faz com que a previsão acompanhe lentamente as mudanças do parâmetro $\mu_t$.
 
-- Um valor pequeno implica numa reaçāo mais rápida. 
+-   Um valor pequeno implica numa reaçāo mais rápida.
 
-- Existem dois casos extremos:
+-   Existem dois casos extremos:
 
 \(i\) se $r=1$, então o valor mais recente da série é utiliządo como previsão de todos os valores futuros (este é o tipo de previsāo mais simples que existe e é denominado "método ingênuo");
 
@@ -154,7 +146,6 @@ As principais **desvantagens** são:
 
 \(iv\) dificuldade em determinar o valor de $r$.
 
-
 # Suavização exponencial simples (SES)
 
 Em séries temporais é razoável pensar que as informações mais recentes tenham um peso maior que as informações mais antigas. Este é exatamente o conceito por trás da suavização exponencial simples. As previsões são calculadas usando médias ponderadas, onde os pesos diminuem à medida que as observações ficam mais longe do tempo atual.
@@ -181,11 +172,11 @@ Para qualquer $\alpha$ entre 0 e 1 , os pesos atribuídos às observações dimi
 
 ## Determinaçāo da constante $\alpha$
 
-- Quanto menor for o valor de $\alpha$ mais estáveis serão as previsões finais, uma vez que a utilização de baixo valor de $\alpha$ implica que pesos maiores serão dados às observaçōes passadas e, conseqüentemente, qualquer flutuação aleatória, no presente, exercerá um peso menor no cálculo da previsāo.
+-   Quanto menor for o valor de $\alpha$ mais estáveis serão as previsões finais, uma vez que a utilização de baixo valor de $\alpha$ implica que pesos maiores serão dados às observaçōes passadas e, conseqüentemente, qualquer flutuação aleatória, no presente, exercerá um peso menor no cálculo da previsāo.
 
-- Brown (1962) faz alguns comentários sobre a determinaçāo dessa constante, de acordo com alguns critérios, tais como tipo de [autocorrelação entre os dados]{.underline} e [custo de previsäo]{.underline}. 
+-   Brown (1962) faz alguns comentários sobre a determinaçāo dessa constante, de acordo com alguns critérios, tais como tipo de [autocorrelação entre os dados]{.underline} e [custo de previsäo]{.underline}.
 
-- Um procedimento mais objetivo é selecionar o valor que fornece a "melhor previsão" das observaçōes já obtidas.
+-   Um procedimento mais objetivo é selecionar o valor que fornece a "melhor previsão" das observaçōes já obtidas.
 
 ## Representação alternativa
 
@@ -308,14 +299,9 @@ fc %>%
 
 ```
 
-
-
 ## Taxonomia dos métodos de suavização exponencial
 
-:::{ style="font-size:20px"  }
-
-
-
+::: {style="font-size:20px"}
 $$
 \begin{array}{cccc}
 \text { Componente de Tendencia }&  & \text { Componente de Sazonalidade } \\& \mathrm{N} & \mathrm{A} & \mathrm{M} \\\hline 
@@ -330,5 +316,4 @@ Alguns desses métodos são resumidos a seguir:
 $$
 \begin{array}{ll}\text { Short hand } & \text { Method } \\\hline(\mathrm{N}, \mathrm{N}) & \text { Simple exponential smoothing } \\\hline(\mathrm{A}, \mathrm{N}) & \text { Holt's linear method } \\\hline\left(\mathrm{A}_d, \mathrm{~N}\right) & \text { Additive damped trend method } \\\hline(\mathrm{A}, \mathrm{A}) & \text { Additive Holt-Winters' method } \\\hline(\mathrm{A}, \mathrm{M}) & \text { Multiplicative Holt-Winters' method } \\\hline\left(\mathrm{A}_d, \mathrm{M}\right) & \text { Holt-Winters' damped method }\end{array}
 $$
-
 :::

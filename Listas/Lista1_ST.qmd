@@ -7,7 +7,7 @@ editor: visual
 
 ## Exercícios
 
-1.   De acordo com o dataset extraído do kaggle [dados climáticos](https://www.kaggle.com/datasets/sumanthvrao/daily-climate-time-series-data?resource=download) :
+1.  De acordo com o dataset extraído do kaggle [dados climáticos](https://www.kaggle.com/datasets/sumanthvrao/daily-climate-time-series-data?resource=download) :
 
 \[a\] Baixe os dados de treinamento
 
@@ -19,13 +19,13 @@ editor: visual
 
 \[e\] mude a medida de tempo das séries para trimestral e repita as análises da letra \[a\]-\[c\].
 
-2.   De acordo com o dataset [dados covid](https://www.kaggle.com/datasets/rsrishav/covid-vaccination-dataset) :
+2.  De acordo com o dataset [dados covid](https://www.kaggle.com/datasets/rsrishav/covid-vaccination-dataset) :
 
 \[a\] Escolha um país e construa os gráficos das séries para cada variável
 
 \[b\] Identifique as características que estão presente nas séries. Verifique se a série possui tendência e sazonalidade. Interprete os resultados.
 
-3.   De acordo com o dataset [(dados desmatamento)](https://www.kaggle.com/datasets/fidelissauro/desmatamento-brasil)
+3.  De acordo com o dataset [(dados desmatamento)](https://www.kaggle.com/datasets/fidelissauro/desmatamento-brasil)
 
 \[a\] construa os gráficos das séries para cada estado.
 

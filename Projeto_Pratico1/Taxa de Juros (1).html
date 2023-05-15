@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Albert Alves dos Santos">
+
+<title>Taxa de Juros Selic (Acumulado por mês)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="Taxa de Juros_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Taxa de Juros_files/libs/quarto-html/quarto.js"></script>
+<script src="Taxa de Juros_files/libs/quarto-html/popper.min.js"></script>
+<script src="Taxa de Juros_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Taxa de Juros_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Taxa de Juros_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Taxa de Juros_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Taxa de Juros_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Taxa de Juros_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Taxa de Juros_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introdução" id="toc-introdução" class="nav-link active" data-scroll-target="#introdução">Introdução</a></li>
+  <li><a href="#modelo-de-suavização-exponencial" id="toc-modelo-de-suavização-exponencial" class="nav-link" data-scroll-target="#modelo-de-suavização-exponencial">Modelo de Suavização exponencial:</a></li>
+  <li><a href="#modelo-de-suavização-exponencial-de-holt-seh" id="toc-modelo-de-suavização-exponencial-de-holt-seh" class="nav-link" data-scroll-target="#modelo-de-suavização-exponencial-de-holt-seh">Modelo de Suavização exponencial de Holt (SEH):</a></li>
+  <li><a href="#modelo-de-suavização-exponencial-de-holt-winters-sehw" id="toc-modelo-de-suavização-exponencial-de-holt-winters-sehw" class="nav-link" data-scroll-target="#modelo-de-suavização-exponencial-de-holt-winters-sehw">Modelo de Suavização Exponencial de Holt-Winters (SEHW):</a></li>
+  <li><a href="#principais-características-da-série" id="toc-principais-características-da-série" class="nav-link" data-scroll-target="#principais-características-da-série">Principais Características da série:</a></li>
+  <li><a href="#análise-descritiva" id="toc-análise-descritiva" class="nav-link" data-scroll-target="#análise-descritiva">Análise Descritiva:</a>
+  <ul class="collapse">
+  <li><a href="#transformando-a-variável-character-em-mês" id="toc-transformando-a-variável-character-em-mês" class="nav-link" data-scroll-target="#transformando-a-variável-character-em-mês">Transformando a variável character em mês:</a></li>
+  <li><a href="#gráfico-da-série-temporal" id="toc-gráfico-da-série-temporal" class="nav-link" data-scroll-target="#gráfico-da-série-temporal">Gráfico da série temporal:</a></li>
+  <li><a href="#decomposição-aditiva-e-multiplicativa" id="toc-decomposição-aditiva-e-multiplicativa" class="nav-link" data-scroll-target="#decomposição-aditiva-e-multiplicativa">Decomposição Aditiva e multiplicativa:</a></li>
+  <li><a href="#estudo-da-sazonalidade" id="toc-estudo-da-sazonalidade" class="nav-link" data-scroll-target="#estudo-da-sazonalidade">Estudo da Sazonalidade</a></li>
+  <li><a href="#verificando-o-subgrafico" id="toc-verificando-o-subgrafico" class="nav-link" data-scroll-target="#verificando-o-subgrafico">Verificando o subgrafico</a></li>
+  <li><a href="#acf-e-pacf" id="toc-acf-e-pacf" class="nav-link" data-scroll-target="#acf-e-pacf">ACF e PACF:</a></li>
+  </ul></li>
+  <li><a href="#treinamento-e-teste" id="toc-treinamento-e-teste" class="nav-link" data-scroll-target="#treinamento-e-teste">Treinamento e teste:</a>
+  <ul class="collapse">
+  <li><a href="#ponto-inicial-e-final" id="toc-ponto-inicial-e-final" class="nav-link" data-scroll-target="#ponto-inicial-e-final">Ponto inicial e final:</a></li>
+  <li><a href="#definindo-a-base-de-dados-em-treinamento-e-teste" id="toc-definindo-a-base-de-dados-em-treinamento-e-teste" class="nav-link" data-scroll-target="#definindo-a-base-de-dados-em-treinamento-e-teste">Definindo a base de dados em treinamento e teste</a></li>
+  <li><a href="#verificando-se-está-correto" id="toc-verificando-se-está-correto" class="nav-link" data-scroll-target="#verificando-se-está-correto">Verificando se está correto</a></li>
+  <li><a href="#estimando-o-modelo-de-suavizacao" id="toc-estimando-o-modelo-de-suavizacao" class="nav-link" data-scroll-target="#estimando-o-modelo-de-suavizacao">Estimando o modelo de suavizacao</a></li>
+  <li><a href="#gerando-uma-previsão-h-4-passos" id="toc-gerando-uma-previsão-h-4-passos" class="nav-link" data-scroll-target="#gerando-uma-previsão-h-4-passos">Gerando uma previsão h = 4 passos</a></li>
+  <li><a href="#gráfico-da-série-com-as-previsões" id="toc-gráfico-da-série-com-as-previsões" class="nav-link" data-scroll-target="#gráfico-da-série-com-as-previsões">Gráfico da série com as previsões:</a></li>
+  <li><a href="#medidas-de-avaliacao" id="toc-medidas-de-avaliacao" class="nav-link" data-scroll-target="#medidas-de-avaliacao">Medidas de avaliacao</a></li>
+  </ul></li>
+  <li><a href="#previsão" id="toc-previsão" class="nav-link" data-scroll-target="#previsão">Previsão:</a>
+  <ul class="collapse">
+  <li><a href="#estimando-o-modelo-de-suavização" id="toc-estimando-o-modelo-de-suavização" class="nav-link" data-scroll-target="#estimando-o-modelo-de-suavização">Estimando o modelo de suavização:</a></li>
+  <li><a href="#gerando-uma-previsão-h-4-passos-1" id="toc-gerando-uma-previsão-h-4-passos-1" class="nav-link" data-scroll-target="#gerando-uma-previsão-h-4-passos-1">Gerando uma previsão h = 4 passos:</a></li>
+  <li><a href="#gráfico-da-série-com-as-previsões-1" id="toc-gráfico-da-série-com-as-previsões-1" class="nav-link" data-scroll-target="#gráfico-da-série-com-as-previsões-1">Gráfico da série com as previsões:</a></li>
+  </ul></li>
+  <li><a href="#referência" id="toc-referência" class="nav-link" data-scroll-target="#referência">Referência:</a></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Taxa de Juros Selic (Acumulado por mês)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Albert Alves dos Santos </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="introdução" class="level2">
+<h2 class="anchored" data-anchor-id="introdução">Introdução</h2>
+<p>Receber dinheiro hoje é melhor do que receber no futuro porque você pode usá-lo imediatamente. Se você adia o recebimento de dinheiro, você pode ganhar juros para compensar esse sacrifício. A taxa de juros é um número que determina a quantidade de juros que você ganha por um período de tempo. A taxa Selic é uma taxa de juros que o governo usa para controlar a inflação e é definida pelo Comitê de Política Monetária. O Banco Central do Brasil mantém a taxa Selic próxima da meta estabelecida pelo Comitê.</p>
+<p>Essa taxa Selic é calculada com base em operações financeiras de curto prazo, geralmente com títulos públicos, e é usada como uma ferramenta para controlar a economia do país. Quando a taxa Selic é alta, os juros são maiores, o que desencoraja o consumo e incentiva a poupança. Por outro lado, quando a taxa Selic é baixa, os juros são menores e as pessoas são incentivadas a gastar mais, o que pode ajudar a estimular a economia. É importante entender como as taxas de juros funcionam para tomar decisões financeiras informadas.</p>
+<p>Com isso podemos definir um problema a se resolver, podemos prever a taxa de juros em 4 meses e verficar qual modelo é mais apropriado para essa previsão, se ela possue algum tipo de tendencia ou sazonalidade.</p>
+<p>Ao realizar uma previsão de 4 meses podemos usá-la para tomar decisões financeiras informadas, como decidir sobre empréstimos ou investimentos, com base nas expectativas futuras da taxa Selic. É importante lembrar que a previsão é baseada em dados históricos e pode ser afetada por eventos imprevisíveis no futuro.</p>
+</section>
+<section id="modelo-de-suavização-exponencial" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-de-suavização-exponencial">Modelo de Suavização exponencial:</h2>
+<p>Os modelos de suavização exponencial são métodos conhecidos por aplicarem um conjunto de pesos desiguais aos valores passados da série temporal, sendo que esses pesos decaem de forma exponencial da mais recente a mais distante observação. A grande utilização dos modelos SE são por causa da sua simplicidade, baixo custo e razoável precisão, e a principal desvantagem é a dificuldade em determinar os valores mais adequados das constantes de suavização. É considerado o método mais popular e com melhor custo/beneficio entre os métodos de extrapolação.</p>
+</section>
+<section id="modelo-de-suavização-exponencial-de-holt-seh" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-de-suavização-exponencial-de-holt-seh">Modelo de Suavização exponencial de Holt (SEH):</h2>
+<p>Os modelos de suavização exponencial de Holt são utilizados satisfatoriamente em séries temporais que apresentam tendência de crescimento linear. A diferença deste método para o método de suavização exponencial simples é que o segundo realiza apenas a suavização do nível da série enquanto o primeiro, além do nível, realiza a suavização da tendencia. O modelo é descrito por três equações e dois parâmetros de suavização. A equação 1 realiza a estimativa do nível, a equação 2 da inclinação e a equação 3 realiza o cálculo da previsão para os próximos k períodos da série temporal.</p>
+</section>
+<section id="modelo-de-suavização-exponencial-de-holt-winters-sehw" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-de-suavização-exponencial-de-holt-winters-sehw">Modelo de Suavização Exponencial de Holt-Winters (SEHW):</h2>
+<p>Esse modelo é também conhecido por modelos de Winters, consiste em modelos adequados para séries temporais que apresentam tendência e sazonalidade. Esse modelos se dividem em aditivo(SEHWA) e multiplicativo(SEHWM). Ambos os modelos e suas utilizações são baseados em quatro equações constantes de ajustamento diferentes associadas às componentes de nível, tendência, sazonalidade e a equação de previsão. No modelo aditivo, a amplitude da variação sazonal permanece constante ao longo do tempo, já na multiplicativa, a amplitude da variação sazonal varia ao longo do tempo.</p>
+</section>
+<section id="principais-características-da-série" class="level2">
+<h2 class="anchored" data-anchor-id="principais-características-da-série">Principais Características da série:</h2>
+<p>A serie se encaixa em um modelo de suavização exponencial simples, no gráfico da série é perceptível altos valores mensais de juros durantes os anos de 1974 a 1994, é uma série que não possui algum tipo de sazonalidade, será verificados na análise descritiva. Temos como base para o estudo realizado nesse relatório a divulgação mensal dos valores dos juros da taxa Selic pelo BCB ( Banco Central do Brasil), portanto os dados estão atualizados a data de 12 de maio de 2023.</p>
+</section>
+<section id="análise-descritiva" class="level1">
+<h1>Análise Descritiva:</h1>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<section id="transformando-a-variável-character-em-mês" class="level2">
+<h2 class="anchored" data-anchor-id="transformando-a-variável-character-em-mês">Transformando a variável character em mês:</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tsibble: 593 x 2 [1M]
+       Data Taxa_de_juros
+      &lt;mth&gt;         &lt;dbl&gt;
+ 1 1974 jan          1.46
+ 2 1974 fev          1.15
+ 3 1974 mar          1.16
+ 4 1974 abr          1.21
+ 5 1974 mai          1.24
+ 6 1974 jun          1.51
+ 7 1974 jul          1.62
+ 8 1974 ago          1   
+ 9 1974 set          1.38
+10 1974 out          1.12
+# ℹ 583 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="gráfico-da-série-temporal" class="level2">
+<h2 class="anchored" data-anchor-id="gráfico-da-série-temporal">Gráfico da série temporal:</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Taxa-de-Juros_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Podemos ver claramente uma tendência crescente na taxa Selic ao longo do tempo.</p>
+<p>Com base na série temporal da taxa Selic, podemos realizar uma análise mais detalhada para identificar componentes importantes, como a tendência, sazonalidade e variações irregulares. Podemos usar técnicas de análise de séries temporais, como a decomposição aditiva e multiplicativa, para separar essas componentes.</p>
+</section>
+<section id="decomposição-aditiva-e-multiplicativa" class="level2">
+<h2 class="anchored" data-anchor-id="decomposição-aditiva-e-multiplicativa">Decomposição Aditiva e multiplicativa:</h2>
+<p>A decomposição aditiva modela a série como uma soma de tendência, sazonalidade e componentes irregulares. A decomposição multiplicativa modela a série como o produto desses mesmos componentes.</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 6 rows containing missing values (`geom_line()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Taxa-de-Juros_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 6 rows containing missing values (`geom_line()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Taxa-de-Juros_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Podemos observar a partir do gráfico da decomposição aditiva que a série temporal apresenta uma tendência crescente ao longo do tempo, com um aumento mais significativo a partir da década de 1990.</p>
+</section>
+<section id="estudo-da-sazonalidade" class="level2">
+<h2 class="anchored" data-anchor-id="estudo-da-sazonalidade">Estudo da Sazonalidade</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Taxa-de-Juros_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Com a observação desse gráfico podemos perceber que não existe uma sazonalidade nos dados, mas iremos confirmar vizualizando o nosso subgráfico, a seguir.</p>
+</section>
+<section id="verificando-o-subgrafico" class="level2">
+<h2 class="anchored" data-anchor-id="verificando-o-subgrafico">Verificando o subgrafico</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Taxa-de-Juros_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Podemos perceber claramente no gráfico que as médias mensais são muito parecidas, com isso podemos afirmar que essa série temporal não apresenta sazonalidade.</p>
+</section>
+<section id="acf-e-pacf" class="level2">
+<h2 class="anchored" data-anchor-id="acf-e-pacf">ACF e PACF:</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Taxa-de-Juros_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Taxa-de-Juros_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Podemos observar a partir do gráfico ACF que há uma autocorrelação significativa nas primeiras defasagens (lags), indicando que a série temporal não é estacionária. Além disso, a partir do gráfico PACF, podemos inferir que a série temporal apresenta uma tendência crescente.</p>
+</section>
+</section>
+<section id="treinamento-e-teste" class="level1">
+<h1>Treinamento e teste:</h1>
+<p>Para realizar a previsão e o teste iremos usar a data a partir de julho de 1994, pois essa data é marcada pela implantação do Real no Brasil, com isso apenas trabalharemos com tal valores.</p>
+<section id="ponto-inicial-e-final" class="level2">
+<h2 class="anchored" data-anchor-id="ponto-inicial-e-final">Ponto inicial e final:</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tsibble: 6 x 2 [1M]
+      Data Taxa_de_juros
+     &lt;mth&gt;         &lt;dbl&gt;
+1 1974 jan          1.46
+2 1974 fev          1.15
+3 1974 mar          1.16
+4 1974 abr          1.21
+5 1974 mai          1.24
+6 1974 jun          1.51</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tsibble: 6 x 2 [1M]
+      Data Taxa_de_juros
+     &lt;mth&gt;         &lt;dbl&gt;
+1 2022 dez          1.12
+2 2023 jan          1.12
+3 2023 fev          0.92
+4 2023 mar          1.17
+5 2023 abr          0.92
+6 2023 mai          0.41</code></pre>
+</div>
+</div>
+</section>
+<section id="definindo-a-base-de-dados-em-treinamento-e-teste" class="level2">
+<h2 class="anchored" data-anchor-id="definindo-a-base-de-dados-em-treinamento-e-teste">Definindo a base de dados em treinamento e teste</h2>
+<p>Para realizar nosso teste vamos utilizar os 4 primeiros meses depois de janeiro de 2023.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tsibble: 6 x 2 [1M]
+      Data Taxa_de_juros
+     &lt;mth&gt;         &lt;dbl&gt;
+1 2022 ago          1.17
+2 2022 set          1.07
+3 2022 out          1.02
+4 2022 nov          1.02
+5 2022 dez          1.12
+6 2023 jan          1.12</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tsibble: 4 x 2 [1M]
+      Data Taxa_de_juros
+     &lt;mth&gt;         &lt;dbl&gt;
+1 2023 fev          0.92
+2 2023 mar          1.17
+3 2023 abr          0.92
+4 2023 mai          0.41</code></pre>
+</div>
+</div>
+</section>
+<section id="verificando-se-está-correto" class="level2">
+<h2 class="anchored" data-anchor-id="verificando-se-está-correto">Verificando se está correto</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tsibble: 4 x 2 [1M]
+      Data Taxa_de_juros
+     &lt;mth&gt;         &lt;dbl&gt;
+1 2023 fev          0.92
+2 2023 mar          1.17
+3 2023 abr          0.92
+4 2023 mai          0.41</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tsibble: 4 x 2 [1M]
+      Data Taxa_de_juros
+     &lt;mth&gt;         &lt;dbl&gt;
+1 2023 fev          0.92
+2 2023 mar          1.17
+3 2023 abr          0.92
+4 2023 mai          0.41</code></pre>
+</div>
+</div>
+</section>
+<section id="estimando-o-modelo-de-suavizacao" class="level2">
+<h2 class="anchored" data-anchor-id="estimando-o-modelo-de-suavizacao">Estimando o modelo de suavizacao</h2>
+<p>Aqui iremos analisar qual modelo será mais adequado para a nossa previsão</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A mable: 1 x 4
+          ETS1         ETS2          SES         ETS3
+       &lt;model&gt;      &lt;model&gt;      &lt;model&gt;      &lt;model&gt;
+1 &lt;ETS(A,A,N)&gt; &lt;ETS(M,M,N)&gt; &lt;ETS(A,M,N)&gt; &lt;ETS(M,A,N)&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="gerando-uma-previsão-h-4-passos" class="level2">
+<h2 class="anchored" data-anchor-id="gerando-uma-previsão-h-4-passos">Gerando uma previsão h = 4 passos</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A fable: 16 x 4 [1M]
+# Key:     .model [4]
+   .model     Data Taxa_de_juros .mean
+   &lt;chr&gt;     &lt;mth&gt;        &lt;dist&gt; &lt;dbl&gt;
+ 1 ETS1   2023 fev N(1.1, 0.056)  1.13
+ 2 ETS1   2023 mar  N(1.1, 0.11)  1.13
+ 3 ETS1   2023 abr  N(1.1, 0.16)  1.14
+ 4 ETS1   2023 mai  N(1.1, 0.22)  1.15
+ 5 ETS2   2023 fev  sample[5000]  1.12
+ 6 ETS2   2023 mar  sample[5000]  1.12
+ 7 ETS2   2023 abr  sample[5000]  1.12
+ 8 ETS2   2023 mai  sample[5000]  1.12
+ 9 SES    2023 fev  sample[5000]  1.15
+10 SES    2023 mar  sample[5000]  1.18
+11 SES    2023 abr  sample[5000]  1.21
+12 SES    2023 mai  sample[5000]  1.23
+13 ETS3   2023 fev N(1.1, 0.024)  1.14
+14 ETS3   2023 mar N(1.2, 0.043)  1.17
+15 ETS3   2023 abr  N(1.2, 0.07)  1.19
+16 ETS3   2023 mai  N(1.2, 0.11)  1.21</code></pre>
+</div>
+</div>
+</section>
+<section id="gráfico-da-série-com-as-previsões" class="level2">
+<h2 class="anchored" data-anchor-id="gráfico-da-série-com-as-previsões">Gráfico da série com as previsões:</h2>
+<p>Aqui podemos observar as previsões obtidas nos valores de teste.</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Plot variable not specified, automatically selected `.vars = Taxa_de_juros`</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Taxa-de-Juros_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="medidas-de-avaliacao" class="level2">
+<h2 class="anchored" data-anchor-id="medidas-de-avaliacao">Medidas de avaliacao</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">accuracy</span>(Taxa_fc, teste)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 10
+  .model .type     ME  RMSE   MAE   MPE  MAPE  MASE RMSSE   ACF1
+  &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+1 ETS1   Test  -0.281 0.398 0.300 -55.7  57.3   NaN   NaN 0.0484
+2 ETS2   Test  -0.264 0.383 0.291 -53.0  55.3   NaN   NaN 0.0419
+3 ETS3   Test  -0.323 0.437 0.324 -62.2  62.3   NaN   NaN 0.0692
+4 SES    Test  -0.338 0.452 0.338 -64.6  64.6   NaN   NaN 0.0746</code></pre>
+</div>
+</div>
+<p>Nessa medida de avaliação mostra qual modelo fica ideal para a nossa previsão, então de acordo com os dados obtidos, iremos utilizar o modelo ETS2, pois ele teve a melhor previsão comparada aos outros modelos.</p>
+</section>
+</section>
+<section id="previsão" class="level1">
+<h1>Previsão:</h1>
+<section id="estimando-o-modelo-de-suavização" class="level2">
+<h2 class="anchored" data-anchor-id="estimando-o-modelo-de-suavização">Estimando o modelo de suavização:</h2>
+<p>aplicando o modelo ideal para realizar a previsão dos 4 meses após maio de 2023.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A mable: 1 x 1
+          ETS2
+       &lt;model&gt;
+1 &lt;ETS(M,M,N)&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="gerando-uma-previsão-h-4-passos-1" class="level2">
+<h2 class="anchored" data-anchor-id="gerando-uma-previsão-h-4-passos-1">Gerando uma previsão h = 4 passos:</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A fable: 4 x 4 [1M]
+# Key:     .model [1]
+  .model     Data Taxa_de_juros .mean
+  &lt;chr&gt;     &lt;mth&gt;        &lt;dist&gt; &lt;dbl&gt;
+1 ETS2   2023 jun  sample[5000] 0.623
+2 ETS2   2023 jul  sample[5000] 0.626
+3 ETS2   2023 ago  sample[5000] 0.628
+4 ETS2   2023 set  sample[5000] 0.634</code></pre>
+</div>
+</div>
+</section>
+<section id="gráfico-da-série-com-as-previsões-1" class="level2">
+<h2 class="anchored" data-anchor-id="gráfico-da-série-com-as-previsões-1">Gráfico da série com as previsões:</h2>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Plot variable not specified, automatically selected `.vars = Taxa_de_juros`</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Taxa-de-Juros_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Em resumo, utilizamos o RStudio para analisar e prever uma série temporal de taxas de juros no período de julho de 1994 a abril de 2023. Utilizamos diversas técnicas de análise de séries temporais, incluindo a visualização dos dados, a análise de tendência e sazonalidade, a aplicação do modelo ETS</p>
+<p>Com base nas análises realizadas, podemos concluir que a taxa de juros no Brasil apresentou uma tendência crescente ao longo dos anos, mas na previsão podemos perceber que os meses estudados apresentaram valores menores que o habitual, numa margem de 0.59 a 0.60 porcento ao mês, durante 4 meses.</p>
+</section>
+</section>
+<section id="referência" class="level1">
+<h1>Referência:</h1>
+<ol type="1">
+<li><a href="https://www.univates.br/bduserver/api/core/bitstreams/6a4924c4-75c3-4251-91c7-1f9b0c596f36/content" class="uri">https://www.univates.br/bduserver/api/core/bitstreams/6a4924c4-75c3-4251-91c7-1f9b0c596f36/content</a> . Acesso em: 11/05/2023.</li>
+<li><a href="https://www.ibm.com/docs/pt-br/spss-statistics/saas?topic=modeler-custom-exponential-smoothing-models" class="uri">https://www.ibm.com/docs/pt-br/spss-statistics/saas?topic=modeler-custom-exponential-smoothing-models</a> . Acesso em: 09/05/2023.</li>
+</ol>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

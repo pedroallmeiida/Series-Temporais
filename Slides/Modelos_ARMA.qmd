@@ -1,6 +1,6 @@
 ---
 title: "Modelos Autoregressivos de médias móveis (ARMA)"
-format: pdf
+format: html
 editor: visual
 ---
 
@@ -293,6 +293,12 @@ esse é um processo causal e invertível.
 
 -   A autocorrelação define um processo MA(q):
 
+    Seja $Y_t$ um processo MA(q), então a autocorrelação é dada por:
+
+    $$
+    \gamma(h)= \begin{cases}\sigma^2 \sum_{j=0}^{q-|h|} \theta_j \theta_{j+|h|}, & \text { if }|h| \leq q, \\ 0, & \text { if }|h|>q,\end{cases}
+    $$Isto é, para os lags maiores que a ordem $q$ a autocorrelação é 0.
+
     ```{r, warning=FALSE, message=FALSE}
     ### Modelo MA(1) 
     t1 <- arima.sim(list(order = c(0,0,1), ma = 0.8), n = 200)
@@ -309,7 +315,7 @@ esse é um processo causal e invertível.
 
     ```
 
--   A autocorrelação parcial define um processo AR(p)
+-   A autocorrelação parcial define um processo AR(p):
 
 ```{r, warning=FALSE, message=FALSE}
 
@@ -426,7 +432,7 @@ em que $w_t$ é o usual processo ruído branco gaussiano, $m$ é o período sazo
 A notação geral do modelo SARIMA é
 
 $$
-ARIMA(p,q,q) \times (P,D,Q)_m. 
+ARIMA(p,d,q) \times (P,D,Q)_m. 
 $$
 
 Por exemplo, Considere o seguinte modelo SARIMA denotado por $ARIMA(0,0,1) \times (1,0,0)_{12}$. Dessa forma assumindo que a série é mensal, o período $m = 12$ corresponde a quantidade de meses em um ano. Além disso, o modelo acima corresponde a um modelo MA(1) para a parte não sazonal e AR(1) para a parte sazonal.
@@ -502,11 +508,11 @@ plot_serie = leisure %>%
 
 ### ACF e PACF das series 
 acf = leisure %>%
-  ACF(difference(Employed, 12) %>% difference(), lag_max = 36 ) %>% 
+  ACF(difference(Employed, 12) %>% difference(), lag_max = 48 ) %>% 
   autoplot() + labs(title="ACF")
 
 pacf = leisure %>%
-  PACF(difference(Employed, 12) %>% difference(), lag_max = 36) %>% 
+  PACF(difference(Employed, 12) %>% difference(), lag_max = 48) %>% 
   autoplot() + labs(title="PACF") 
 
 

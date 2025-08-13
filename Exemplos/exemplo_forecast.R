@@ -26,7 +26,6 @@ serie %>%
 
 
 
-
 ### ESTUDO PARA A VARIAVEL SALES 
  
 ### ACF e PACF das series 
@@ -96,13 +95,14 @@ test <- serie %>%
 head(test)
 tail(test)
 
+
 # Estimando o modelo de suavizacao
 sales_fit <- train %>%
   model(
     ETS1 = ETS( Sales ~ error("A") + trend( "N" ) + season("A")),
     ETS2 = ETS( Sales ~ error("A") + trend( "A" ) + season("A")),
-    SES = ETS( Sales ~ error("A") + trend( "N" ) + season("N")),
-    ETS3 = ETS( Sales ~ error("A") + trend( "N" ) + season("M")) 
+    ETS3 = ETS( Sales ~ error("A") + trend( "N" ) + season("N")),
+    ETS4 = ETS( Sales ~ error("A") + trend( "N" ) + season("M")) 
     )
 sales_fit
 

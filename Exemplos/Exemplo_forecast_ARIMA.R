@@ -42,6 +42,12 @@ plot_serieD = serie %>%
        y="")
 plot_serieD
 
+#### Verificando se a série é estacionária 
+serie %>%  
+  features( difference(Exports), unitroot_kpss)
+
+
+
 ### ACF e PACF das series 
 acf_D = serie %>%
   ACF(difference(Exports), lag_max = 20) %>% 
@@ -118,11 +124,13 @@ train %>%
 #### FORECAST
 
 caf_fit <- train %>%
-  model(arima210 = ARIMA(Exports ~ pdq(2,1,0)),
+  model(ETS1 = ETS( Exports ~ error( 'A' ) + trend( 'A' ) + season('N')  ),
+        ETS2 = ETS( Exports ~ error( 'A' ) + trend( 'M' ) + season('N')  ),
         arima012 = ARIMA(Exports ~ pdq(0,1,2)),
         arima212 = ARIMA(Exports ~ pdq(2,1,2)),
+        arima111 = ARIMA(Exports ~ pdq(1,1,1)),
         rb = ARIMA(Exports ~ pdq(0,1,0)),
-        auto = ARIMA(Exports ) )
+        auto = ARIMA(Exports) )
 
 caf_fit %>% select(auto)
 
@@ -136,7 +144,7 @@ caf_fit %>%
 
 
 
-# GERANDO UMA PREVISAO h = 2 passos 
+# GERANDO UMA PREVISAO h = 5 passos 
 caf_fc <- caf_fit %>% forecast(h = 5)
 caf_fc
 

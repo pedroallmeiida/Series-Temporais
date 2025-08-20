@@ -1,0 +1,331 @@
+---
+title: "Séries Temporais"
+title-slide-attributes:
+  data-background-image: Marca_UEPB.png
+  data-background-size: contain
+  data-background-opacity: "0.15"
+author: "Professor: Pedro M. Almeida-Junior"
+institute: "Universidade Estadual da Paraíba"
+format: 
+  revealjs: 
+    width: 1000
+    margin: 0.1
+    logo: Marca_UEPB.png
+    theme: [default, hscroll.scss]
+    transition: slide
+    background-transition: fade
+    smaller: true
+    scrollable: true
+knitr:
+  opts_chunk:
+    message: false
+    warning: false
+css: hscroll.scss
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+#  Curso Séries temporais 
+
+## <span style="font-size: 40px;"> Conceitos inicias em séries temporais </span>
+
+<br/>
+
+-   Objetivos de séries temporais
+
+-   Análise descritiva com séries temporais
+
+-   Tendência
+
+-   Sazonalidade
+
+-   Estacionariedade
+
+-   exemplos práticos de aplicações em séries temporais
+
+
+## <span style="font-size: 40px;"> Modelos de Suavização exponencial  </span>
+
+<br/>
+
+-   Médias móveis simples
+
+-   Suavização exponencial simples
+
+-   Suavização exponencial de Holt
+
+-   Suavização exponencial sazonal de Holt-Winters
+
+## <span style="font-size: 40px;"> Modelos AR, MA, ARMA e ARIMA  </span>
+
+-   Modelos Autoregressivos (AR)
+
+-   Modelos de médias móveis (MA)
+
+-   Modelos Autoregressivos e de médias móveis (ARMA)
+
+-   Modelos Autoregressivos e de médias móveis integrados(ARIMA)
+    
+-   Modelos Sazonais Autoregressivos e de médias móveis integrados(SARIMA)
+
+-   Identificação das ordens dos modelos
+
+-   critério para seleção dos modelos
+
+-   Previsão e medidas de avaliação
+
+-   diagnóstico dos modelos
+
+-   Exemplos práticos no R
+
+## <span style="font-size: 40px;"> Modelos alternativos  </span>
+
+<br/>
+
+
+-   Modelos de séries temporais não gaussianas (GARMA)
+
+-   Modelos ARCH e GARCH
+ 
+-   Modelos de séries temporais não paramétricos
+
+-   Exemplos práticos no R
+
+-   Introdução ao Python e aplicações
+
+
+
+
+## <span style="font-size: 40px;"> Referências sobre séries temporais </span>
+
+</br>
+
+\[1\] SHUMWAY R. H. STOFFER, D. S. Time series analysis and its applications with R examples. 3°ed. New York: Springer, 2010.
+
+\[2\] MORETTIN, P.A. Análise de Séries Temporais. S. Paulo, Edgard Blucher, 2006.
+
+\[3\] BROCKWELL, P. & DAVIS, R. Introduction to Time Series and Forecasting. Springer, 1996.
+
+\[4\] HAMILTON, J.D. Time Series Analysis.
+
+\[5\] Forecasting: Principles and Practice (3rd ed). *Rob J Hyndman and George Athanasopoulos.* Monash University, Australia. [Versão online](https://otexts.com/fpp3/)
+
+## <span style="font-size: 40px;"> Sites com exemplos em séries temporais </span>
+
+<https://www.kaggle.com/>
+
+<https://data.world/>
+
+<https://medium.com/analytics-vidhya/10-time-series-datasets-for-practice-d14fec9f21bc>
+
+<https://dados.gov.br/dataset>
+
+<https://sidra.ibge.gov.br/home/pnadcm>
+
+<http://ipeadata.gov.br/Default.aspx>
+
+<https://campinagrande.pb.gov.br/portal-da-transparencia/>
+
+<http://dados.recife.pe.gov.br/>
+
+<https://transparencia.joaopessoa.pb.gov.br/#/>
+
+<https://www3.bcb.gov.br/sgspub/localizarseries/localizarSeries.do?method=prepararTelaLocalizarSeries>
+
+
+
+## <span style="font-size: 40px;">  Conceitos iniciais em séries temporais </span>
+
+::: {style="height:500px; font-size:30px; margin-left: 5px; margin-right: 5px"}
+Uma série temporal é qualquer conjunto de observações ordenadas ao longo do tempo. A seguir, temos alguns exemplos de séries temporais:
+
+-   valores diários de precipitação de chuva em campina grande;
+
+-   quantidade de assaltos semanais em uma determinada região;
+
+-   índices diários da Bolsa de Valores de São Paulo;
+
+-   valor gasto com gasolina anualmente por orgãos públicos;
+
+-   registros do fluxo de carros em um estacionamento por hora;
+
+Estes são alguns, dos mais diversos exemplos nos quais podemos aplicar as técnicas de séries temporais. Note que, essa técnica pode ser aplicada para diferentes medidas de tempo: Segundos, minutos, hora, dia, semana, mês e ano.
+:::
+
+##  Objetivos principais
+
+
+<br/>
+
+As análises usando séries temporais têm como principais objetivos:
+
+<br/>
+
+
+\(i\) Fazer previsões de valores futuros da série;
+
+\(ii\) Descrever o comportamento da série;
+
+\(iii\) Identificar periodicidades relevantes nos dados;
+
+
+## Domínio temporal e espectral
+
+<br/>
+
+
+Existem, basicamente, dois enfoques usados na análise de séries temporais.
+
+<br/>
+
+
+-   Domínio temporal (será o enfoque do curso)
+
+-   Domínio na frequência (análise espectral).
+
+## Notação
+
+<br/>
+
+
+Seja $Z_t$ uma variável aleatória no instante $t$ ( Por exemplo, a temperatura no tempo $t$ ). De modo geral, uma série temporal poderá ser representado por um vetor ${Z}_{t_1}, \ldots, Z_{t_n}$.
+
+## Tendência
+
+<br/>
+
+- Uma das principais características para se observar em uma série temporal é a tendência. 
+
+<br/>
+
+- Serve para dentificar se a série apresenta um comportamento crescente ou decrescente ao longo do tempo. 
+
+## Exemplo: Tendência
+
+
+```{r, echo=F}
+
+x1 = rnorm(100, mean = 10, sd = 1)
+x2 = c()
+for (i in 1:20) x2[i] = rnorm(1, mean = 10+i, sd = 1)
+x3 = rnorm(100, mean = 25, sd = 1)
+
+y = c(x1, x2, x3)
+plot.ts(y, xlab = "Tempo", ylab = "Valores", main = "Exemplo de série com tendência" )
+```
+:::
+
+## Sazonalidade
+
+<br/>
+
+
+- O componente de sazonalidade também é outra característica importante para observar-se em uma série temporal. 
+
+<br/>
+
+- Esse componente determina se existe um comportamento sazonal ou cíclico, ou seja, se uma série observada apresenta um comportamento que se repete de tempos em tempos. 
+
+## Exemplo: Sazonalidade
+
+```{r, echo=TRUE}
+
+## Carregando os pacotes 
+library(TSA)
+library(forecast)
+
+data("AirPassengers")
+plot.ts(AirPassengers, main = 'Quantidade de passageiros de avião entre 1949-1960')
+
+
+
+```
+:::
+
+## Estacionariedade
+
+<br/>
+
+
+- Uma das suposições que podemos fazer em uma série temporal é a de que ela é **estacionária**. 
+
+- Isto é, ao longo do tempo seus valores estão aleatoriamente próximos de uma média constante, refletindo de alguma forma um equilíbrio estável. 
+
+
+## Exemplo: Série Estacionaria
+
+```{r, echo=F}
+
+x1 = rnorm(100, mean = 10, sd = 1)
+ts.plot(x1, xlab = "Tempo", ylab = "Valores", main = "Exemplo de uma série estacionária" )#+abline(h = mean(x1), lty = "dashed", col = "red")
+
+
+
+```
+:::
+
+## <span style="font-size: 40px;">  Lidando com a não estacionariedade </span>
+
+<br/>
+
+
+-   Em várias situações práticas, vamos ter que lidar com **séries não estacionárias**.
+-   É bastante comum, por exemplo, em séries econômicas e financeiras a presença de **tendências** de longos períodos ou curtos períodos (o que geralmente caracteriza uma mudança de nível).
+-   Em alguns modelos estatísticos de séries temporais, vamos ter que "tratar" a [não estacionariedade]{.underline} das séries através de transformações.
+-   A transformação mais comum seria **tomar diferenças sucessivas da série original**, até obter uma série estacionária.
+
+
+## <span style="font-size: 40px;">  Operador Diferença </span>
+
+<br/>
+
+O operador diferença ( $\Delta$ ) de primeira ordem pode ser definido como
+
+$$
+\Delta Z_t = Z_t - Z_{t-1}
+$$
+
+a segunda diferença é
+
+$$
+\Delta^2Z_t = \Delta[ \Delta Z_t ] = \Delta [ Z_t - Z_{t-1} ] 
+$$
+
+De modo geral, a n-ésima diferença de $Z_t$ é
+
+$$
+ \Delta^n Z_t = \Delta[ \Delta^{n-1} Z_t ]
+$$
+
+Na prática, é comum tomar uma ou duas diferenças para tornar a série temporal estacionária. 
+
+
+
+## <span style="font-size: 40px;">  Exemplo: Tornando uma série estacionária </span>
+
+
+O exemplo a seguir, ilustra como o operador diferença pode tornar uma série claramente não estacionária em uma série estacionária.
+
+```{r, echo=T}
+### Exemplo simulado no R: 
+x1 = c()
+for (i in 1:100) x1[i] = rnorm(1, mean = 10+(i/2), sd = 1)
+x2 = diff(x1, 1)
+
+plot.ts(x1, xlab = "Tempo", ylab = "Valores", main = "série não estacionária" )
+
+plot.ts(x2, xlab = "Tempo", ylab = "Valores", main = "série aplicando o operador \n
+        diferença de primeira ordem" )
+```
+
+
+## Atividade para próxima aula
+
+<br/>
+
+1. Trazer na próxima aula exemplos de séries: Com tendência, sem tendência, sazonais; 
+
+2. Para a série com tendência aplique o operador diferença e compare o resultado. 
+
+3. Apresente os gráficos das séries

@@ -1,0 +1,336 @@
+---
+title: "Séries Temporais"
+title-slide-attributes:
+  data-background-image: Marca_UEPB.png
+  data-background-size: contain
+  data-background-opacity: "0.15"
+author: "Professor: Pedro M. Almeida-Junior"
+institute: "Universidade Estadual da Paraíba"
+format: 
+  revealjs: 
+    width: 1000
+    margin: 0.1
+    logo: Marca_UEPB.png
+    theme: [default, hscroll.scss]
+    transition: slide
+    background-transition: fade
+    smaller: true
+    scrollable: true
+knitr:
+  opts_chunk:
+    message: false
+    warning: false
+css: hscroll.scss
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+
+# Modelos para séries temporais 
+
+## <span style="font-size: 55px;"> Tipos de modelos para séries temporais </span>
+
+</br>
+
+- Os modelos em séries temporais controlados por leis probabilísticas, são baseados na teoria de um **processo estocástico**. 
+
+</br>
+
+- A construção desses modelos depende de vários fatores, tais como a **natureza** dos dados, **objetivo** da análise e **comportamento** da série. 
+
+</br>
+
+- Dessa forma, o leque de opções de modelos que podemos aplicar são muitos, inclusive modelos **não probabilísticos** também podem ser usados (Redes neurais, deep learning, etc ...).
+
+## <span style="font-size: 60px;"> Processos estocásticos </span>
+
+</br>
+
+</br>
+
+
+ [**Definição:**]{.underline}  Seja $\tau$ um conjunto arbitrário. Um processo estocástico é uma família $Z = \{ Z_t, t \in \tau \}$, tal que, para cada $t \in \tau$, $Z_t$ é uma variável aleatória.
+
+
+</br>
+
+Nessas condições, um processo estocástico é uma família de variáveis aleatórias, que supomos definidas num mesmo espaço de probabilidade $( \Omega, \mathcal{A}, \mathcal{P} )$. 
+Cada $t \in \mathbb{Z}$, tal que $Z_t$ seja uma variável aleatória. 
+
+## <span style="font-size: 55px;"> Ilustração </span>
+
+</br>
+
+Na Figura a seguir, podemos ilustrar um processo estocástico como uma família de trajetórias.
+
+![Fonte: Morettin & Toloi (2018)](processos.png)
+
+**Observação:** Uma série temporal é uma realização de um processo estocástico, isto é, $Z_t^{(j)}$ para algum $j = 1, \ldots, n$.
+
+
+
+
+
+## <span style="font-size: 50px;"> Processos Estocásticos Estacionários </span>
+
+</br>
+
+</br>
+
+
+**Definição:** Um processo estocástico $Z=\{Z(t), t \in \tau\}$ diz-se estritamente estacionário se todas as distribuições finito-dimensionais permanecem as mesmas sob translações no tempo, ou seja,
+
+$$
+F\left(z_1, \ldots, z_n ; t_1+\tau, \ldots, t_n+\tau\right)=F\left(z_1, \ldots, z_n ; t_1, \ldots, t_n\right)
+$$
+
+para quaisquer $t_1, \ldots, t_n, \tau$. Isto é, 
+
+$$
+P\left( Z_{t_1+\tau} \leq z_1, \ldots, Z_{t_n+\tau} \leq z_n \right)=   P\left( Z_{t_1} \leq z_1, \ldots, Z_{t_n} \leq z_n \right).
+$$
+
+## Mesma média e variância
+
+</br>
+
+</br>
+
+Isto significa, em particular, que todas as distribuições unidimensionais são invariantes sob translações do tempo, logo a média $\mu(t)$ e a variância $V(t)$ são constantes, isto é,
+
+$$
+\mu(t)=\mu, \quad V(t)=\sigma^2,
+$$
+
+para todo $t \in \tau$. Sem perda de generalidade, podemos supor que $\mu=0$; caso contrário, considere o processo $\{Z(t)-\mu\}$.
+
+
+
+## <span style="font-size: 40px;"> Processo fracamente estacionário </span>
+
+</br>
+
+</br>
+
+**Definição:** Um processo estocástico $Z=\{Z(t), t \in T\}$ diz-se fracamente estacionário ou estacionário de segunda ordem (ou em sentido amplo) se e somente se:
+
+</br>
+
+\(i\) $E\{Z(t)\}=\mu(t)=\mu$, constante, para todo $t \in T_{\text {; }}$
+
+\(ii\) $E\left\{Z^2(t)\right\}<\infty$, para todo $t \in T$;
+
+\(iii\) $\gamma\left(t_1, t_2\right) =\operatorname{Cov}\left(Z_{t_1}, Z_{t_2}\right)$ é uma função de $h = \left|t_1-t_2\right|$.
+
+
+
+## <span style="font-size: 40px;"> Função de autocovariância </span>
+
+</br>
+
+Seja $\{Z_t, t \in \mathbb{Z}\}$ um processo estocástico real com tempo discreto, de média zero e função de autocovariância (FACV) $\gamma_r = \mathbf{E}( Z_t Z_{t-r} )$.
+
+</br>
+
+**Proposição**: A FACV $\gamma_r$ satisfaz as seguintes propriedades:
+
+\(i\) $\gamma_0 > 0$
+
+\(ii\) $\gamma_{-r} = \gamma_r$
+
+\(iii\) $\mid \gamma_r \mid \leq \gamma_0$
+
+
+## <span style="font-size: 40px;"> Revisão de conceitos de probabilidade  </span>
+
+</br>
+
+#### Valor Esperado da soma
+
+$$
+E(Z_1+ Z_2) = E(Z_1) + E(Z_2)
+$$
+
+#### Propriedades da variância 
+
+$$
+\begin{align}
+&\text{Var}( aX + b ) = a^2\text{Var}(X) \\
+&\text{Var}( X ) = E(X^2) - \left[  E(X) \right]^2
+\end{align}
+$$
+
+
+
+#### Covariância entre duas variáveis
+
+$$
+\text{Cov}( Z_1, Z_2 ) = E( Z_1 \, Z_2 ) - E(Z_1) \, E(Z_2)
+$$
+
+
+
+#### Variância da soma de variáveis aleatórias
+
+$$
+\text{Var}( Z_1 + Z_2 ) = \text{Var}( Z_1 ) + \text{Var}(Z_2) + 2\text{Cov}( Z_1, Z_2 )
+$$
+
+
+#### Propriedades da covariância 
+
+Sejam X, Y e Z variáveis aleatórias, então, temos que:
+
+$$
+\text{Cov}(aX + bY + c, Z ) = a \text{Cov}(X, Z ) + b\text{Cov}(Y, Z )
+$$
+em que $a, b$ e $c$ são constantes quaisquer. 
+
+
+## <span style="font-size: 40px;"> Função de Autocovariância </span>
+
+</br>
+
+</br>
+
+**Definição:** Seja $\{ Z_t \}$ um processo estacionário. A função de autocovariância de $Z_t$ na defasagem (ou lag) h é dada por: 
+
+</br>
+
+$$
+\gamma_Z(h) = \text{Cov}( Z_{t}, Z_{t+h} ).
+$$
+
+
+## <span style="font-size: 40px;"> Função de Autocorrelação </span>
+
+</br>
+
+</br>
+
+**Definição:** Seja $\{ Z_t \}$ um processo estacionário. A função de autocorrelação de $Z_t$ na defasagem (ou lag) h é dada por: 
+
+</br>
+
+$$
+\rho_Z(h) = \frac{\gamma_Z(h)}{\gamma_Z(0)}.
+$$
+
+
+# Processos estacionários
+
+## Ruído Branco 
+
+</br>
+
+
+</br>
+
+Definimos o processo $\epsilon_t$ como sendo um processo ruído branco, quando
+
+$$
+\epsilon_t \sim RB(0, \sigma^2)
+$$ 
+em que os $\epsilon_t$'s são independentes e identicamente distribuídos com média zero e variância constante, $\sigma^2.$
+
+
+## Processo MA(1) 
+
+
+</br>
+
+
+</br>
+
+O processo de médias móveis de ordem 1, MA(1), pode ser definido como: 
+
+$$
+Z_t = \theta \epsilon_{t-1} + \epsilon_t
+$$
+em que $\epsilon_t$ é um ruído branco, isto é, $\epsilon_t \sim RB(0, \sigma^2)$
+
+
+## Processo AR(1)
+
+</br>
+
+</br>
+
+
+O processo Autoregressivo de ordem 1, AR(1), é definido como:
+
+$$
+Z_t = \phi Z_{t-1} + \epsilon_t
+$$
+em que $\epsilon_t$ é um ruído branco, isto é, $\epsilon_t \sim RB(0, \sigma^2)$, $\phi$ é o parâmetro autoregressivo tal que $\mid \phi \mid < 1$ (para garantir a estacionariedade) e $\text{Cov}( \epsilon_t, Z_{t-h} ) = 0$ para $h > 0$, isto é, o erro atual não está correlacionado com valores passados do processo autoregressivo.
+
+
+## Exercícios
+
+
+</br>
+
+</br>
+
+1. Verifique se um processo ruído branco é fracamente estacionário 
+
+2. Verifique se um processo MA(1) é fracamente estacionário 
+
+3. Obtenha a função de autocovariância e autocorrelação do processo AR(1)
+
+
+## Função de autocorrelação amostral
+
+</br>
+
+- Embora tenhamos acabado de ver como calcular a função de autocorrelação para alguns processos de séries temporais, em problemas práticos não começamos com um processo definido, mas com dados observados $\{Z_1, Z_2, \ldots, Z_n\}$. 
+
+</br>
+
+- Para avaliar o grau de dependência nos dados e selecionar um modelo para os dados que reflita isso, uma das ferramentas importantes que usamos é a função de autocorrelação amostral (FCA amostral) dos dados. 
+
+
+## Estimando a autocorrelação
+
+</br>
+
+- Se acreditarmos que os dados são valores realizados de uma série temporal estacionária $\{Z_t\}$, então a FCA amostral nos fornecerá uma estimativa da FCA de $\{Z_t\}$. 
+
+</br>
+
+- Essa estimativa pode sugerir qual dos muitos modelos possíveis de séries temporais estacionárias é um candidato adequado para representar a dependência nos dados. 
+
+
+## <span style="font-size: 40px;"> Função de Autocovariância e Autocorrelação Amostral  </span>
+
+
+Seja $x_1, \ldots, x_n$ uma série temporal observada.  
+
+##### Média Amostral  
+A média amostral da série é dada por:  
+$$
+\bar{x} = \frac{1}{n} \sum_{i=1}^n x_i.
+$$
+
+##### Função de Autocovariância Amostral  
+A função de autocovariância amostral é definida como:  
+$$
+\hat{\gamma}(h) := \frac{1}{n} \sum_{i=1}^{n-|h|} (x_{i+|h|} - \bar{x})(x_i - \bar{x}), \quad -n < h < n.
+$$
+
+##### Função de Autocorrelação Amostral  
+A função de autocorrelação amostral é calculada por:  
+$$
+\hat{\rho}(h) = \frac{\hat{\gamma}(h)}{\hat{\gamma}(0)}, \quad -n < h < n.
+$$
+
+
+## Exercício
+
+</br>
+
+</br>
+
+Escolha uma série temporal e calcule a função de autocorrelação. Interprete o seu comportamento. 
+

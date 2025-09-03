@@ -203,13 +203,13 @@ $$
 $$
 
 
-## <span style="font-size: 40px;"> Função de Autocorrelação </span>
+## <span style="font-size: 40px;"> Função de Autocorrelação (FAC)</span>
 
 </br>
 
 </br>
 
-**Definição:** Seja $\{ Z_t \}$ um processo estacionário. A função de autocorrelação de $Z_t$ na defasagem (ou lag) h é dada por: 
+**Definição:** Seja $\{ Z_t \}$ um processo estacionário. A função de autocorrelação (FAC) de $Z_t$ na defasagem (ou lag) h é dada por: 
 
 </br>
 
@@ -288,14 +288,14 @@ em que $\epsilon_t$ é um ruído branco, isto é, $\epsilon_t \sim RB(0, \sigma^
 
 </br>
 
-- Para avaliar o grau de dependência nos dados e selecionar um modelo para os dados que reflita isso, uma das ferramentas importantes que usamos é a função de autocorrelação amostral (FCA amostral) dos dados. 
+- Para avaliar o grau de dependência nos dados e selecionar um modelo para os dados que reflita isso, uma das ferramentas importantes que usamos é a função de autocorrelação amostral (FAC amostral) dos dados. 
 
 
 ## Estimando a autocorrelação
 
 </br>
 
-- Se acreditarmos que os dados são valores realizados de uma série temporal estacionária $\{Z_t\}$, então a FCA amostral nos fornecerá uma estimativa da FCA de $\{Z_t\}$. 
+- Se acreditarmos que os dados são valores realizados de uma série temporal estacionária $\{Z_t\}$, então a FAC amostral nos fornecerá uma estimativa da FAC de $\{Z_t\}$. 
 
 </br>
 

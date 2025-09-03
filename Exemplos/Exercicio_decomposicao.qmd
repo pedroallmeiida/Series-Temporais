@@ -1,0 +1,65 @@
+---
+title: "📘 Exercício: Decomposição Aditiva de Série Temporal (Trimestral)"
+format: html
+editor: visual
+---
+
+
+Suponha que a série abaixo representa as vendas trimestrais de uma empresa de E-commerce (em unidades) entre 2020 e 2022. Vamos decompor essa série em tres componentes **Tendência (T)**, **Sazonalidade (S)** e **Resíduo (R)**:
+
+$$
+Z_t = T_t + S_t + R_t
+$$
+
+
+#### Dados observados
+
+| t  | Trimestre   | $Z_t$ | $M_t$ |  $T_t$ | $D_t = Z_t - T_t$ | $S_t$ | $R_t$ |
+|----|-------------|-------|-----------|---------------|-------------------------|-----------------------|-----------------|
+| 1  | 1º trim/2020 | 120 |        |         |                           |                         |                   |
+| 2  | 2º trim/2020 | 130 |        |        |                           |                         |                   |
+| 3  | 3º trim/2020 | 150 |        |         |                           |                         |                   |
+| 4  | 4º trim/2020 | 140 |        |          |                           |                         |                   |
+| 5  | 1º trim/2021 | 130 |         |        |                           |                         |                   |
+| 6  | 2º trim/2021 | 140 |         |        |                           |                         |                   |
+| 7  | 3º trim/2021 | 160 |         |        |                           |                         |                   |
+| 8  | 4º trim/2021 | 150 |         |        |                           |                         |                   |
+| 9  | 1º trim/2022 | 140 |         |        |                           |                         |                   |
+| 10 | 2º trim/2022 | 150 |         |        |                           |                         |                   |
+| 11 | 3º trim/2022 | 170 |         |        |                           |                         |                   |
+| 12 | 4º trim/2022 | 160 |         |        |                           |                         |                   |
+
+---
+
+## Orientações
+
+1. **Tendência (T)**  
+   - Calcule a **média móvel de ordem 4 ($M_t$)**. (Se o período fosse 12, calcularíamos a média móvel com janela r = 12) 
+   - Depois centralize a média móvel para alinhar ao trimestre correto (Calculando a média das médias móveis --$T_t$).  *OBS: Esse passo só é necessário se o período for par*. 
+
+2. **Detrended**  
+   - Subtraia a tendência do valor observado:  
+     
+     $$
+     D_t = Z_t - T_t
+     $$
+
+3. **Sazonalidade (S)**  
+   - Agrupe os valores de $D_t$ por trimestre (1º, 2º, 3º, 4º).  
+   - Calcule a média de cada grupo.  
+   - Ajuste para que a soma dos quatro índices sazonais seja **zero**.  
+
+4. **Resíduo (R)**  
+   - Calcule: 
+   
+     $$
+     R_t = Z_t - T_t - S_t
+     $$
+
+---
+
+✍️ **Tarefa:** Complete a tabela acima com os cálculos de $T_t$, $D_t$, $S_t$ e $R_t$.
+
+
+
+

@@ -1,0 +1,187 @@
+---
+title: "Modelos ARCH e GARCH"
+title-slide-attributes:
+  data-background-image: Marca_UEPB.png
+  data-background-size: contain
+  data-background-opacity: "0.15"
+author: "Professor: Pedro M. Almeida-Junior"
+institute: "Universidade Estadual da Paraíba"
+format: 
+  revealjs: 
+    width: 1000
+    margin: 0.1
+    logo: Marca_UEPB.png
+    theme: [default, hscroll.scss]
+    transition: slide
+    background-transition: fade
+    smaller: true
+    scrollable: true
+knitr:
+  opts_chunk:
+    message: false
+    warning: false
+css: hscroll.scss
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+## <span style="font-size: 60px;"> Volatilidade </span>
+
+</br>
+
+- Séries temporais financeiras, bem como os preços das ações, as taxas de câmbio, as taxas de inflação, etc., frequentemente apresentam fenômenos da aglomeração por volatilidade; 
+
+
+- Períodos nos quais os preços apresentam grandes oscilações por um período de tempo seguido por períodos nos quais há relativa estabilidade; 
+
+
+- Séries temporais financeiras refletem o resultado da lei da oferta e demanda (entre compradores e vendedores de ativos financeiros);
+
+
+- Mercado de ações e títulos públicos podem sofrer grandes oscilações com notícias ou resultado financeiro. 
+
+
+## <span style="font-size: 50px;"> Como modelar uma série temporal com volatilidade </span>
+
+</br>
+
+- Modelar séries temporais financeiras é um grande desafio, pois geralmente apresentam grandes variações ao longo do tempo. Dessa forma, torna a predição do "nível" da série bastante desafiadora. 
+
+
+- Sendo assim, em vez de modelar os níveis da série financeira, por que não modelar as suas primeiras diferenças ? 
+
+- Essas primeiras diferençafrequentemente apresentam grande volatilidade. Sugerindo que a variância da série temporal muda ao longo do tempo.
+
+
+## <span style="font-size: 50px;">  Estudando o comportamento da variância </span>
+
+
+</br>
+
+- Podemos pensar, por que não propor um modelo para a variabilidade da série, ao invés de estudar o nível da série (Como nos modelos ARIMA, SARIMA, etc ...) 
+
+
+- O modelo que estuda o comportamento da variância ao longo do tempo é chamado de *Autoregressive Conditional Heterocedastic* (ARCH)
+
+
+- A Heterocedasticidade pode ter uma estrutura Autoregressiva, ou seja, a variância pode ser autocorrelacionada ao longo do tempo. 
+
+## Modelos ARCH e GARCH
+
+</br>
+
+Os modelos ARCH foram introduzidos por Engle (1982). Esses modelos foram estendidos para ARCH GEneralizado (GARCH) por Bollerslev (1986). 
+
+
+</br>
+
+COnsidere que $X_t$ é o valor de uma ação no tempo $t$, então o retorno ou ganho relativo, $Y_t$, de uma ação no tempo $t$ é: 
+
+$$
+Y_t = \frac{X_t - X_{t-1}}{X_{t-1}}
+$$
+
+## 
+
+Essa definição implica que $X_t = (1 + Y_t)X_{t-1}$. Então temos que, 
+
+\begin{align}
+log(X_t) = log(1 + Y_t) + log(X_{t-1}) \\
+
+log(X_t) - log(X_{t-1})= log(1 + Y_t)  \\
+
+\triangledown \, log(X_t) = log(1 + Y_t)  \\
+\end{align}
+
+em que $\triangledown \, log(X_t) = log(X_t) - log(X_{t-1})$. Se o retorno representa uma pequena mudança percentual em magnitude, então, 
+
+$$
+\triangledown \, log(X_t) \approx Y_t
+$$
+Tipicamente, para séries financeiras, o retorno $Y_t$ não tem variância condicional constante, podem existir períodos de alta volatilidade e estabilidade em outros momentos. 
+
+
+## Exemplo Indice Bovespa 
+
+
+```{r, message=FALSE, warning=F}
+library(quantmod)
+library(rugarch)
+library(FinTS)
+
+#Baixar dados do BOVA11 (Yahoo Finance)
+getSymbols("BOVA11.SA", src = "yahoo", from = "2019-01-01", to = "2022-01-01")
+bova <- `BOVA11.SA`
+
+# Calcular retornos logarítmicos
+returns <- na.omit(dailyReturn(Cl(bova), type = "log"))
+
+# Calcular retorno logarítmico manualmente
+returns2 <- na.omit(diff(log(Cl(bova))) )
+
+# Visualizar retornos
+plot(returns, main = "Retornos logarítmicos diários - BOVA11 (2019 e 2021)", col = "blue")
+
+# Teste de efeito ARCH
+#ArchTest(coredata(returns), lags = 12)
+
+```
+
+
+## Modelo ARCH(1)
+
+O modelo ARCH mais simples é o ARCH(1), que é dado por:
+
+\begin{align}
+Y_t &= \sigma_t\epsilon_t \\
+\sigma^2_t &= \alpha_0 + \alpha_1 y_{t-1}^2
+\end{align}
+
+em que $\epsilon_t$ é um ruído branco gaussiano, $\epsilon_t \sim N(0, 1)$. As restrições do modelo são $\alpha_1 > 0$ e $\sigma^2_t > 0$. 
+
+A variância condicional do modelo ARCH(1) depende dos retornos anteriores. Primeiro, note que a distribuição amostral de $Y_t \mid Y_{t-1}$ é gaussiana: 
+
+$$
+Y_t \mid Y_{t-1} \sim N(0, \alpha_0 + \alpha_1 y_{t-1}^2)
+$$
+
+## Modelo ARCH(p)
+
+O modelo ARCH(1) pode ser extendido para o modelo geral $ARCH(p)$: 
+
+\begin{align}
+Y_t &= \sigma_t\epsilon_t \\
+\sigma^2_t &= \alpha_0 + \alpha_1 y_{t-1}^2 + \cdots + \alpha_p y_{t-p}^2
+\end{align}
+
+</br>
+
+A distribuição condicional de $Y_t \mid Y_{t-1}$ é dada por: 
+
+$$
+Y_t \mid Y_{t-1} \sim N(0, \alpha_0 + \alpha_1 y_{t-1}^2 + \cdots + \alpha_p y_{t-p}^2)
+$$
+
+
+## Modelos GARCH
+
+Outra extensão do modelo ARCH é o GARCH desenvolvido por Bollerslev. Por exemplo, o modelo GARCH(1,1) é dado por: 
+
+
+\begin{align}
+Y_t &= \sigma_t\epsilon_t \\
+\sigma^2_t &= \alpha_0 + \alpha_1 y_{t-1}^2 + \beta_1 \sigma_{t-1}^2
+\end{align}
+
+</br>
+
+Para o caso geral de ordem $p$ e $q$. O modelo GARCH(p,q) é dado por: 
+
+\begin{align}
+Y_t &= \sigma_t\epsilon_t \\
+\sigma^2_t &= \alpha_0 + \sum\limits_{i=1}^{p} \alpha_i y_{t-i}^2 + \sum\limits_{j=1}^{q}\beta_j \sigma_{t-j}^2
+\end{align}
+
+
+

@@ -1,0 +1,126 @@
+---
+title: "Modelos SARIMA"
+title-slide-attributes:
+  data-background-image: Marca_UEPB.png
+  data-background-size: contain
+  data-background-opacity: "0.15"
+author: "Professor: Pedro M. Almeida-Junior"
+institute: "Universidade Estadual da Paraíba"
+format: 
+  revealjs: 
+    width: 1000
+    margin: 0.1
+    logo: Marca_UEPB.png
+    theme: [default, hscroll.scss]
+    transition: slide
+    background-transition: fade
+    smaller: true
+    scrollable: true
+knitr:
+  opts_chunk:
+    message: false
+    warning: false
+css: hscroll.scss
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+## <span style="font-size: 60px;"> Modelos SARIMA </span>
+
+</br>
+
+- Até agora, restringimos nossa atenção a dados não sazonais e modelos ARIMA não sazonais. 
+
+</br>
+
+- Os modelos ARIMA também são capazes de modelar uma ampla gama de dados sazonais.
+
+</br>
+
+- Um modelo ARIMA sazonal é formado pela inclusão de termos szonais adicionais nos modelos ARIMA que vimos até agora. 
+
+
+## <span style="font-size: 60px;"> Estrutura modelo sazonal </span>
+
+Está escrito da seguinte forma:
+
+![](sarima.png)
+
+em que $m =$ o período sazonal (por exemplo, se a série for mensal o $m$ é 12, ou seja, em um ano temos 12 meses, De forma similar, se temos uma série trimestral em um ano temos 4 trimestres ou seja, $m = 4$). Usamos notação em maiúsculo para as partes sazonais do modelo e notação em minúsculo para as partes não sazonais do modelo.
+
+
+## <span style="font-size: 60px;">  Modelo SARIMA  </span>
+
+</br>
+
+**Definição:** O modelo multiplicativo *Seasonal Autoregressive Integrated Moving Average* (SARIMA) é definido por:
+
+$$
+\small
+\left(1-\phi_1 B\right)\left(1-\Phi_1 B^m\right)(1-B)\left(1-B^m\right) y_t=\left(1+\theta_1 B\right)\left(1+\Theta_1 B^m\right) w_t
+$$
+
+</br>
+
+em que $w_t$ é o usual processo ruído branco gaussiano, $m$ é o período sazonal, $(p,d,q)$ são as ordens para a estrutura não sazonal e $(P,D,Q)$ são as ordens para a estrutura sazonal.
+
+
+## <span style="font-size: 60px;"> Notação modelo SARIMA </span>
+
+</br>
+
+A notação geral do modelo SARIMA é
+
+$$
+ARIMA(p,q,q) \times (P,D,Q)_m. 
+$$
+
+</br>
+
+**Por exemplo**, Considere o seguinte modelo SARIMA denotado por $ARIMA \,(0,0,1) \times (1,0,0)_{12}$: 
+
+Dessa forma assumindo que a série é mensal, o período $m = 12$ corresponde a quantidade de meses em um ano. Além disso, o modelo acima corresponde a um modelo MA(1) para a parte não sazonal e AR(1) para a parte sazonal.
+
+## <span style="font-size: 60px;"> Comportamento da ACF e PACF de modelos SARIMA </span>
+
+
+</br>
+
+- A parte sazonal de um modelo AR ou MA será vista nas defasagens sazonais do PACF e ACF. 
+
+- Ao considerar as ordens sazonais apropriadas para um modelo ARIMA sazonal, restrinja a atenção aos *lags* sazonais.
+
+- O procedimento de modelagem é quase o mesmo que para dados não sazonais, exceto que precisamos selecionar termos sazonais AR e MA, bem como os componentes não sazonais do modelo. 
+
+
+## Exemplo MA(1) sazonal
+
+<br/>
+
+Por exemplo, um ARIMA $(0,0,0)(0,0,1)_{12}$ o modelo mostrará:
+
+<br/>
+
+-   Um pico no lag 12 no ACF, mas nenhum outro pico significativo;
+
+-   Decaimento exponencial nas defasagens sazonais do PACF (isto é, nas defasagens $12,24,36, \ldots$ ).
+
+
+## Exemplo AR(1) sazonal
+
+<br/>
+
+Da mesma forma, um ARIMA $(0,0,0)(1,0,0)_{12}$ o modelo mostrará:
+
+<br/>
+
+-   decaimento exponencial nas defasagens sazonais da ACF;
+
+-   um único pico significativo no lag 12 no PACF.
+
+
+## Vamos ao R !! 
+
+
+COLOCAR LINK 

@@ -1,0 +1,143 @@
+---
+title: "Modelos Autoregressivos Integrados de médias móveis (ARIMA)"
+title-slide-attributes:
+  data-background-image: Marca_UEPB.png
+  data-background-size: contain
+  data-background-opacity: "0.15"
+author: "Professor: Pedro M. Almeida-Junior"
+institute: "Universidade Estadual da Paraíba"
+format: 
+  revealjs: 
+    width: 1000
+    margin: 0.1
+    logo: Marca_UEPB.png
+    theme: [default, hscroll.scss]
+    transition: slide
+    background-transition: fade
+    smaller: true
+    scrollable: true
+knitr:
+  opts_chunk:
+    message: false
+    warning: false
+css: hscroll.scss
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+## <span style="font-size: 50px;"> Modelos ARIMA </span>
+
+<br/>
+
+
+- Se combinarmos diferenciação com autorregressão e um modelo de média móvel, obtemos um modelo ARIMA não sazonal. 
+
+
+- ARIMA é um acrônimo para *AutoRegressive Integrated Moving Average*. 
+
+<br/>
+
+
+O modelo completo pode ser escrito como
+
+$$
+y_t^{\prime}=c+\phi_1 y_{t-1}^{\prime}+\cdots+\phi_p y_{t-p}^{\prime}+\theta_1 w_{t-1}+\cdots+\theta_q w_{t-q}+ w_t
+$$
+
+em que $y_t^{\prime}$ é a série diferenciada (pode ter sido diferenciada mais de uma vez). Os "preditores" no lado direito incluem ambos os valores defasados de $y_t$ e $w_t$.
+
+
+## <span style="font-size: 50px;"> Entendimento dos parâmetros (p, d, q) </span>
+
+
+<br/>
+
+
+Chamamos isso de $\operatorname{ARIMA}(p, d, q)$ modelo, onde
+
+-   $p=$ ordem da parte autorregressiva;
+
+-   $d=$ grau de primeira diferenciação envolvido;
+
+-   $q=$ ordem da parte média móvel.
+
+
+<br/>
+
+
+**Observação:** As mesmas condições de estacionaridade e invertibilidade usadas para modelos autorregressivos e de média móvel também se aplicam a um modelo ARIMA.
+
+
+## <span style="font-size: 50px;"> Definição dos modelos  </span>
+
+<br/>
+
+
+Muitos dos modelos que já discutimos são casos especiais do modelo ARIMA, conforme a seguir:
+
+
+-   Ruído branco: $\operatorname{ARIMA}(0, 0, 0)$
+
+-   Autoregressivo (AR): $\operatorname{ARIMA}(p, 0, 0)$
+
+-   Médias Móveis (MA): $\operatorname{ARIMA}(0, 0, q)$
+
+-   Autoregressivo de Médias Móveis (ARMA): $\operatorname{ARIMA}(p, 0, q)$
+
+<br/>
+
+
+Aplicando o operador diferença, podemos representar o modelo $\operatorname{ARIMA}(p, d, q)$ como
+
+$$
+\small
+\left(1-\phi_1 B-\cdots-\phi_p B^p\right) \,(1-B)^d y_t=c+\left(1+\theta_1 B+\cdots+\theta_q B^q\right) w_t.
+$$
+
+## Akaike's Information Criterion
+
+<br/>
+
+*Akaike's Information Criterion* (AIC) é usado para determinar a ordem de um modelo ARIMA. Pode ser escrito como
+
+$$
+\mathrm{AIC}=-2 \log (L)+2(p+q+k+1),
+$$
+
+em que $L$ é a verossimilhança dos dados, $k=1$ se $c \neq 0$ e $k=0$ se $c=0$. Note que o último termo em parênteses é o número de parâmetros do modelo ( incluindo a variância dos resíduos, $\sigma^2_w$ ).
+
+Para modelos ARIMA, o **AIC corrigido** pode ser escrito como
+
+$$
+\mathrm{AICc}=\mathrm{AIC}+\frac{2(p+q+k+1)(p+q+k+2)}{T-p-q-k-2}
+$$
+
+em que $T$ é o tamanho da amostra.
+
+
+## Bayesian Information Criterion (BIC)
+
+<br/>
+
+
+Por fim, o *Bayesian Information Criterion* (BIC) pode ser definido como
+
+<br/>
+
+$$
+\mathrm{BIC}=\mathrm{AIC}+[\log (T)-2](p+q+k+1)
+$$
+
+<br/>
+
+**Bons modelos** são obtidos minimizando o AIC, AICc ou BIC. É preferível usar o AICc ou BIC.
+
+
+
+
+## Vamos ao R !!! 
+
+
+
+

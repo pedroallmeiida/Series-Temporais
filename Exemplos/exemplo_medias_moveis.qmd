@@ -1,0 +1,62 @@
+---
+title: "Médias Móveis aplicações"
+author: "Pedro Almeida"
+format: html
+editor: visual
+---
+
+### Médias Móveis aplicadas no mercado financeiro
+
+Uma análise dos preços de fechamento da empresa estatal brasileira Petrobrás, código de negociação PETR4.
+
+```{r, echo = T, warning=F, message=F}
+
+library(quantmod)
+
+getSymbols("PETR4.SA", src = "yahoo", from = "2022-01-01", to = "2025-09-05")
+head(PETR4.SA)
+tail(PETR4.SA)
+chartSeries(PETR4.SA, theme = chartTheme("white"), TA = "addVo()")
+
+```
+
+### Calculando as médias móveis simples e exponencial para o preço de fechamento
+
+```{r, warning=F, message = F}
+
+## preco de fechamento
+preco <- Cl(PETR4.SA)
+
+
+# SMA de 20 dias
+SMA20 <- SMA(preco, n = 20)
+SMA200 <- SMA(preco, n = 200)
+
+# EMA de 20 dias
+EMA20 <- EMA(preco, n = 20)
+EMA200 <- EMA(preco, n = 200)
+```
+
+### Adicionando as médias móveis no preço das ações da petrobrás
+
+
+#### medias móveis simples
+
+```{r, results='hide'}
+chartSeries(PETR4.SA, theme = chartTheme("white"),
+name = "PETR4 – Preço e Médias Móveis")
+
+addTA(SMA20, on = 1, col = "blue", lwd = 2)
+addTA(SMA200, on = 1, col = "darkblue", lwd = 2)
+```
+
+#### Médias móveis exponencial
+
+```{r, results='hide'}
+chartSeries(PETR4.SA, theme = chartTheme("white"),
+name = "PETR4 – Preço e Médias Móveis")
+
+addTA(EMA20, on = 1, col = "red", lwd = 1)
+addTA(EMA200, on = 1, col = "darkred", lwd = 1)
+```
+

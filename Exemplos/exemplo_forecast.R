@@ -4,7 +4,7 @@ library(forecast)
 library(fpp3)
 
 ### Carregando banco de dados em formato csv
-tute1 <- readr::read_csv("C:/Users/pedro/Dropbox/disciplinas_UEPB/Series_Temporais/tute1.csv")
+tute1 <- readr::read_csv("https://raw.githubusercontent.com/pedroallmeiida/Series-Temporais/refs/heads/main/Exemplos/tute1.csv")
 View(tute1)
 
 ### transformando parao formato tstible

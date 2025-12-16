@@ -99,11 +99,21 @@ tail(test)
 # Estimando o modelo de suavizacao
 sales_fit <- train %>%
   model(
-    ETS1 = ETS( Sales ~ error("A") + trend( "N" ) + season("A")),
-    ETS2 = ETS( Sales ~ error("A") + trend( "A" ) + season("A")),
-    ETS3 = ETS( Sales ~ error("A") + trend( "N" ) + season("N")),
-    ETS4 = ETS( Sales ~ error("A") + trend( "N" ) + season("M")) 
-    )
+    # SES (Suavização Exponencial Simples)
+    SES = ETS(Sales ~ error("A") + trend("N") + season("N")),
+    
+    # Holt aditivo
+    HoltA = ETS(Sales ~ error("A") + trend("A") + season("N")),
+    
+    # Holt multiplicativo
+    HoltM = ETS(Sales ~ error("M") + trend("A") + season("N")),
+    
+    # Holt-Winters aditivo
+    HW_Add = ETS(Sales ~ error("A") + trend("A") + season("A")),
+    
+    # Holt-Winters multiplicativo
+    HW_Mult = ETS(Sales ~ error("M") + trend("A") + season("M"))
+  )
 sales_fit
 
 

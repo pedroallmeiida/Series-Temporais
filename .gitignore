@@ -1,0 +1,9 @@
+# Ignorar pasta node_modules
+Projetos_anos_anteriores/
+Slides/
+
+# Ignorar arquivos de log
+*.log
+
+# Ignorar arquivos .env
+.env

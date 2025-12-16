@@ -1,24 +1,46 @@
 ---
-title: "Projeto prático 1- Séries temporais"
-author: "Pedro Almeida"
+title: "Projeto 1: Modelos de Suavização Exponencial"
+author: "Prof. Pedro Monteiro Almeida-JR"
 format: html
 editor: visual
 ---
 
-## Projeto de séries temporais
+## Diretrizes
 
-O desenvolvimento do projeto objetiva-se a apresentação dos seguintes tópicos:
+O desenvolvimento do projeto deve seguir as seguintes diretrizes:
+
+### Parte teórica
 
 -   Introdução sobre o tema do projeto
 
 -   Contextualizar o problema e propor uma solução usando séries temporais
 
--   Falar sobre os modelos de suavização exponencial (ETS)
+-   Falar sobre os modelos de suavização exponencial
+
+### Parte prática
 
 -   Explicar as principais características das séries (Possui tendência, sazonalidade ?)
 
 -   Realizar uma análise descritiva dos seus dados, explicando em detalhes suas características
 
--   Realizar um processo de previsão e justificar a escolha do melhor modelo para fazer previsão
+-   Realizar um processo de previsão e justificar a escolha do melhor modelo
 
--   Interpretar os resultados finais e propor uma solução com base nos dados para o seu problema
+-   Interpretar os resultados finais do seu estudo e propor uma solução com base nos dados para o seu problema
+
+### Códigos R
+
+-   Criação de um repositório no *GitHub*
+
+-   Estruturar o repositório em módulos (criar arquivos para fazer pré-processamento, treinamento e previsões)
+
+-   *Arquivo.qmd* para gerar o relatório usando *Quarto Documentos* (Criar uma pasta para a escrita do relatório)
+
+-   Manter os códigos organizados (sempre que possível comente seu código com as instruções necessárias)
+
+-   Criar um arquivo *Readme.md* no *GitHub* para apresentar as principais instruções para os usuários consumirem os seus projetos.
+
+A **avaliação final** será composta por:
+
+1.  Qualidade do relatório
+2.  Organização dos códigos
+3.  Apresentação do seminário.

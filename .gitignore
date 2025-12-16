@@ -1,5 +1,7 @@
-# Ignorar pasta node_modules
+# Ignorar pasta Projetos_anos_anteriores
 Projetos_anos_anteriores/
+
+# Ignorar pasta Slides
 Slides/
 
 # Ignorar arquivos de log

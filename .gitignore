@@ -2,7 +2,7 @@
 Projetos_anos_anteriores/
 
 # Ignorar pasta Slides
-Slides/
+slides/
 
 # Ignorar arquivos de log
 *.log
